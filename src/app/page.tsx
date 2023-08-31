@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import Star from "./star";
 import Lock from "./Lock";
 import Header from "./Header";
+import SendMessage from "./SendMessage";
 
 export default function Home() {
   const messages = [];
@@ -43,10 +44,15 @@ export default function Home() {
               {helpers.map((helper) => (
                 <button
                   key={helper.title}
-                  className="border-[1px] border-gray-600 rounded-lg text-start px-3 py-2 text-sm"
+                  className="group hover:bg-gray-500 flex justify-between items-center border-[1px] border-gray-600 rounded-xl text-start px-3 py-2 text-sm"
                 >
-                  <p className="">{helper.title}</p>
-                  <p className="text-gray-700">{helper.desc}</p>
+                  <div className="flex flex-col">
+                    <span className="">{helper.title}</span>
+                    <span className="text-gray-700">{helper.desc}</span>
+                  </div>
+                  <div className="hidden group-hover:block">
+                    <SendMessage />
+                  </div>
                 </button>
               ))}
             </div>
