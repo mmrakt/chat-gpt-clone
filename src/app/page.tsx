@@ -1,9 +1,10 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import Star from "./star";
+import Star from "./Star";
 import Lock from "./Lock";
 import Header from "./Header";
 import SendMessage from "./SendMessage";
+import PromptForm from "./components/PromptForm";
 
 export default function Home() {
   const messages = [];
@@ -33,13 +34,13 @@ export default function Home() {
     <>
       <Header />
       <div className="">
+        <div className="flex justify-center">
+          <h1 className="text-gray-600 text-4xl font-semibold">ChatGPT</h1>
+        </div>
         {messages.length !== 0 ? (
           <div className=""></div>
         ) : (
           <div className="px-8">
-            <div className="flex justify-center">
-              <h1 className="text-gray-600 text-4xl font-semibold">ChatGPT</h1>
-            </div>
             <div className="grid grid-cols-2 gap-2 mt-60">
               {helpers.map((helper) => (
                 <button
@@ -51,13 +52,16 @@ export default function Home() {
                     <span className="text-gray-700">{helper.desc}</span>
                   </div>
                   <div className="hidden group-hover:block">
-                    <SendMessage />
+                    <SendMessage enabled />
                   </div>
                 </button>
               ))}
             </div>
           </div>
         )}
+        <div className="px-7 mt-4">
+          <PromptForm />
+        </div>
       </div>
     </>
   );
