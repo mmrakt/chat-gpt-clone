@@ -2,26 +2,57 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Star from "./star";
 import Lock from "./Lock";
+import Header from "./Header";
 
 export default function Home() {
+  const messages = [];
+  const helpers = [
+    {
+      title: "Show me a code snippet",
+      desc: "of a website's sticky header",
+      message: "",
+    },
+    {
+      title: "Compare business strategies",
+      desc: "for transitioning from budget to luxury vs. luxury to budget",
+      message: "",
+    },
+    {
+      title: "Come up with concepts",
+      desc: "for a retro-style arcade game",
+      message: "",
+    },
+    {
+      title: "Recommend activities",
+      desc: "for a team-building day with remote employees",
+      message: "",
+    },
+  ];
   return (
     <>
-      <header className="py-6 px-2 flex justify-center">
-        <div className=""></div>
-        <div className="flex bg-gray-200 rounded-lg p-1">
-          <button className="text-gray-700 flex justify-center items-center gap-2 py-2.5 bg-gray-500 w-36 rounded-lg ">
-            <Image src="/spark.svg" alt="" width={16} height={16} />
-            <span className="text-white text-sm">GPT-3.5</span>
-          </button>
-          <button className="text-gray-700 flex items-center gap-2 py-2.5  w-36 rounded justify-center">
-            {/* <Image src="/star.svg" alt="" width={16} height={16} /> */}
-            <Star />
-            <span className="text-sm">GPT-4</span>
-            <Lock />
-            {/* <Image src="/lock.svg" alt="" width={16} height={16} /> */}
-          </button>
-        </div>
-      </header>
+      <Header />
+      <div className="">
+        {messages.length !== 0 ? (
+          <div className=""></div>
+        ) : (
+          <div className="px-8">
+            <div className="flex justify-center">
+              <h1 className="text-gray-600 text-4xl font-semibold">ChatGPT</h1>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-60">
+              {helpers.map((helper) => (
+                <button
+                  key={helper.title}
+                  className="border-[1px] border-gray-600 rounded-lg text-start px-3 py-2 text-sm"
+                >
+                  <p className="">{helper.title}</p>
+                  <p className="text-gray-700">{helper.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
