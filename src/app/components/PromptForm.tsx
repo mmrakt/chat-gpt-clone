@@ -5,17 +5,24 @@ import useAutosizeTextArea from "../hooks/useAutosizeTextArea";
 import SendMessage from "../SendMessage";
 import { twMerge } from "tailwind-merge";
 
-const PromptForm = () => {
-  const [text, setText] = useState("");
+type Props = {
+  onSubmit: (content: string) => void;
+};
+
+const PromptForm = ({ onSubmit }: Props) => {
+  const [content, setContent] = useState("");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  useAutosizeTextArea(textAreaRef.current, text);
+  useAutosizeTextArea(textAreaRef.current, content);
 
   const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = evt.target?.value;
 
-    setText(val);
+    setContent(val);
   };
-  const handleSubmit = () => {};
+
+  const handleSubmit = () => {
+    onSubmit(content);
+  };
   return (
     <div className="bg-gray-500 rounded-xl w-full p-4 flex items-center shadow-xs">
       <textarea
@@ -30,10 +37,10 @@ const PromptForm = () => {
         onClick={handleSubmit}
         className={twMerge(
           "p-2 rounded-lg transition-colors duration-200 self-end",
-          text !== "" ? "bg-green-500" : ""
+          content !== "" ? "bg-green-500" : ""
         )}
       >
-        <SendMessage enabled={!!text} />
+        <SendMessage enabled={!!content} />
       </button>
     </div>
   );

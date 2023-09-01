@@ -1,3 +1,5 @@
+import { CreateChatCompletionRequest } from "openai";
+
 export const ASSIGNABLE_MODEL = {
   THREE_TURBO: "gpt-3.5-turbo",
   FOUR: "gpt-4",
@@ -28,4 +30,8 @@ export const MODEL_INFO = {
   },
 } as const satisfies {
   [key in AssignableModel]: { name: string; detailName: string };
+};
+
+export type StreamChatDTO = {
+  params: Pick<CreateChatCompletionRequest, "model" | "messages">;
 };

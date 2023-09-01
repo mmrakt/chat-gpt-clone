@@ -1,36 +1,75 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import Star from "./Star";
 import Lock from "./Lock";
 import Header from "./Header";
 import SendMessage from "./SendMessage";
 import PromptForm from "./components/PromptForm";
 import Help from "./components/Help";
+import { ASSIGNABLE_MODEL, StreamChatDTO } from "../constants";
+import { CreateChatCompletionRequest } from "openai";
+import { useState } from "react";
+import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
+
+const helpers = [
+  {
+    title: "Show me a code snippet",
+    desc: "of a website's sticky header",
+    message: "",
+  },
+  {
+    title: "Compare business strategies",
+    desc: "for transitioning from budget to luxury vs. luxury to budget",
+    message: "",
+  },
+  {
+    title: "Come up with concepts",
+    desc: "for a retro-style arcade game",
+    message: "",
+  },
+  {
+    title: "Recommend activities",
+    desc: "for a team-building day with remote employees",
+    message: "",
+  },
+];
 
 export default function Home() {
-  const messages = [];
-  const helpers = [
-    {
-      title: "Show me a code snippet",
-      desc: "of a website's sticky header",
-      message: "",
-    },
-    {
-      title: "Compare business strategies",
-      desc: "for transitioning from budget to luxury vs. luxury to budget",
-      message: "",
-    },
-    {
-      title: "Come up with concepts",
-      desc: "for a retro-style arcade game",
-      message: "",
-    },
-    {
-      title: "Recommend activities",
-      desc: "for a team-building day with remote employees",
-      message: "",
-    },
-  ];
+  const streamChatCompletionMutation = useStreamChatCompletion();
+  const [messages, setMessages] = useState<string[]>([]);
+
+  const handleSubmit = async (content: string) => {
+    const params: StreamChatDTO["params"] = {
+      model: ASSIGNABLE_MODEL.THREE_TURBO,
+      messages: [
+        {
+          role: "user",
+          content,
+        },
+      ],
+    };
+
+    await streamChatCompletionMutation.start({
+      params,
+      onSuccess: async (content) => {
+        // await createMessageMutation.mutateAsync({
+        //   chatId: chat.id,
+        //   role: "assistant",
+        //   content,
+        // });
+        // streamChatCompletionMutation.setContent(undefined);
+      },
+      onError: (errorCode) => {
+        // const message =
+        //   errorCode === "context_length_exceeded"
+        //     : "エラーが発生しました";
+        // notifyError({
+        //   message,
+        //   options: { autoClose: false },
+        // });
+      },
+    });
+  };
   return (
     <>
       <Header />
@@ -63,7 +102,7 @@ export default function Home() {
           </div>
         )}
         <div className="px-7 mt-4">
-          <PromptForm />
+          <PromptForm onSubmit={handleSubmit} />
         </div>
         <div className="mt-4">
           <Help />

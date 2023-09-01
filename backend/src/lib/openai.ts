@@ -51,8 +51,6 @@ const ASSIGNABLE_MODEL = {
 } as const;
 
 export const validateParams = (data: unknown) => {
-  console.log("bar");
-  console.log(data);
   if (data == null || typeof data !== "object") return;
   const obj = data as { [key: string]: unknown };
   if (!Array.isArray(obj?.messages)) return;
