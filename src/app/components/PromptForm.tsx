@@ -17,18 +17,19 @@ const PromptForm = () => {
   };
   const handleSubmit = () => {};
   return (
-    <div className="bg-gray-500 rounded-xl w-full p-4 flex items-center shadow-sm">
+    <div className="bg-gray-500 rounded-xl w-full p-4 flex items-center shadow-xs">
       <textarea
-        className="w-full bg-inherit placeholder-gray-700 resize-none leading-none align-middle focus-visible:outline-none focus:outline-none h-5 max-h-50 overflow-y-auto"
+        className="w-full bg-inherit placeholder-gray-700 resize-none align-middle focus-visible:outline-none focus:outline-none h-6 max-h-50 overflow-y-auto"
         placeholder="Send a message"
         onChange={handleChange}
         ref={textAreaRef}
         id="prompt"
+        rows={1}
       ></textarea>
       <button
         onClick={handleSubmit}
         className={twMerge(
-          "p-1 rounded-lg transition-colors duration-200",
+          "rounded-lg transition-colors duration-200",
           text !== "" ? "bg-green-500" : ""
         )}
       >
