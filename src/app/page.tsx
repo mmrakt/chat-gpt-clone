@@ -75,33 +75,35 @@ export default function Home() {
       <Header />
       <div className="">
         <div className="flex justify-center">
-          <h1 className="text-gray-600 text-4xl font-semibold">ChatGPT</h1>
+          <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-600">
+            ChatGPT
+          </h1>
         </div>
         {messages.length !== 0 ? (
           <div className=""></div>
         ) : (
           <div className="px-8">
-            <div className="grid grid-cols-2 gap-2 mt-60">
+            <div className="mt-60 grid grid-cols-2 gap-2">
               {helpers.map((helper) => (
                 <button
                   key={helper.title}
-                  className="relative group hover:bg-gray-500 flex justify-between items-center border-[1px] border-gray-600 rounded-xl text-start px-3 py-2 text-sm"
+                  className="group relative flex items-center justify-between rounded-xl border-[1px] border-[rgba(0,0,0,.1)] px-3 py-2 text-start text-sm hover:bg-gray-500 hover:bg-gray-900 dark:border-gray-600"
                 >
-                  <div className="flex flex-col w-full">
-                    <span className="">{helper.title}</span>
-                    <span className="text-gray-700 text-ellipsis whitespace-nowrap overflow-x-hidden">
+                  <div className="flex w-full flex-col">
+                    <span className="font-bold">{helper.title}</span>
+                    <span className="overflow-x-hidden text-ellipsis whitespace-nowrap text-gray-700">
                       {helper.desc}
                     </span>
                   </div>
-                  <div className="hidden group-hover:block absolute right-3">
-                    <SendMessage enabled />
+                  <div className="absolute right-3 hidden group-hover:block">
+                    <SendMessage className="text-gray-200" />
                   </div>
                 </button>
               ))}
             </div>
           </div>
         )}
-        <div className="px-7 mt-4">
+        <div className="mt-4 px-7">
           <PromptForm onSubmit={handleSubmit} />
         </div>
         <div className="mt-4">

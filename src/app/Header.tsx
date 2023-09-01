@@ -1,17 +1,19 @@
 import Image from "next/image";
-import Star from "./star";
+import Star from "./Star";
 import Lock from "./Lock";
 
 const Header = () => {
   return (
-    <header className="py-6 px-2 flex justify-center">
+    <header className="flex justify-center px-2 py-6">
       <div className=""></div>
-      <div className="flex bg-gray-200 rounded-lg p-1">
-        <button className="text-gray-700 flex justify-center items-center gap-2 py-2.5 bg-gray-500 w-36 rounded-lg ">
+      <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
+        <button className="flex w-36 items-center justify-center gap-2 rounded-lg bg-white py-2.5 text-gray-700 dark:bg-gray-500 ">
           <Image src="/spark.svg" alt="" width={16} height={16} />
-          <span className="text-white text-sm">GPT-3.5</span>
+          <span className="text-sm font-bold text-gray-200 dark:text-white">
+            GPT-3.5
+          </span>
         </button>
-        <button className="text-gray-700 flex items-center gap-2 py-2.5  w-36 rounded justify-center">
+        <button className="flex w-36 items-center justify-center gap-2  rounded py-2.5 text-gray-700">
           <Star />
           <span className="text-sm">GPT-4</span>
           <Lock />

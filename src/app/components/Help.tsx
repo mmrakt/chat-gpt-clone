@@ -24,7 +24,7 @@ const Help = () => {
   ];
   const modalItemStyle = "w-full flex items-center gap-2 p-4";
   return (
-    <p className="text-xs text-gray-800 flex items-center justify-center relative">
+    <p className="relative flex items-center justify-center text-xs text-gray-400 dark:text-gray-800">
       Free Research Preview. ChatGPT may produce inaccurate information about
       people, places, or facts.
       <a
@@ -39,7 +39,7 @@ const Help = () => {
           onClick={() => {
             setModalOpened(!modalOpened);
           }}
-          className="bg-gray-550 border-gray-600 border-[1px] p-2 rounded-full w-6 h-6 flex items-center justify-center absolute right-5"
+          className="absolute right-5 flex h-6 w-6 items-center justify-center rounded-full border-[1px] border-gray-800 bg-gray-900 p-2 dark:border-gray-600 dark:bg-gray-550"
         >
           <span className="text-base">?</span>
         </Menu.Button>
@@ -54,7 +54,7 @@ const Help = () => {
         >
           <Menu.Items
             className={twMerge(
-              "absolute right-5 bottom-6 bg-gray-200 rounded-lg py-1"
+              "absolute bottom-6 right-5 rounded-lg bg-gray-200 py-1 text-gray-800",
             )}
             as="ul"
           >

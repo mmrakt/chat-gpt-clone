@@ -24,9 +24,9 @@ const PromptForm = ({ onSubmit }: Props) => {
     onSubmit(content);
   };
   return (
-    <div className="bg-gray-500 rounded-xl w-full p-4 flex items-center shadow-xs">
+    <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white p-4 shadow-sm dark:bg-gray-500">
       <textarea
-        className="w-full bg-inherit placeholder-gray-700 resize-none align-middle focus-visible:outline-none focus:outline-none h-6 max-h-50 overflow-y-auto"
+        className="max-h-50 h-6 w-full resize-none overflow-y-auto bg-inherit align-middle placeholder-gray-700 focus:outline-none focus-visible:outline-none"
         placeholder="Send a message"
         onChange={handleChange}
         ref={textAreaRef}
@@ -36,8 +36,8 @@ const PromptForm = ({ onSubmit }: Props) => {
       <button
         onClick={handleSubmit}
         className={twMerge(
-          "p-2 rounded-lg transition-colors duration-200 self-end",
-          content !== "" ? "bg-green-500" : ""
+          "self-end rounded-lg p-2 transition-colors duration-200",
+          content !== "" ? "bg-green-500" : "",
         )}
       >
         <SendMessage enabled={!!content} />
