@@ -30,6 +30,7 @@ const Help = () => {
       <a
         href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
         className="ml-1 underline"
+        target="_blank"
       >
         ChatGPT August 3 Version
       </a>
@@ -60,7 +61,11 @@ const Help = () => {
             {modalItems.map((item) => (
               <Menu.Item className="hover:bg-gray-400" key={item.icon} as="li">
                 {item.href !== "" ? (
-                  <a href={item.href} className={twMerge(modalItemStyle)}>
+                  <a
+                    href={item.href}
+                    className={twMerge(modalItemStyle)}
+                    target="_blank"
+                  >
                     {item.icon === "externalLink" && <ExternalLink />}
                     {item.text}
                   </a>

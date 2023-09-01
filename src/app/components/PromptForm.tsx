@@ -29,7 +29,7 @@ const PromptForm = () => {
       <button
         onClick={handleSubmit}
         className={twMerge(
-          "rounded-lg transition-colors duration-200",
+          "p-2 rounded-lg transition-colors duration-200 self-end",
           text !== "" ? "bg-green-500" : ""
         )}
       >
