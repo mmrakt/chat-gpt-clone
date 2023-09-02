@@ -1,9 +1,9 @@
-import { config } from "dotenv";
 import { IncomingMessage } from "http";
 import { Configuration, CreateChatCompletionRequest, OpenAIApi } from "openai";
 import process from "process";
+import { loadEnv } from "../utils/loadEnv";
 
-config();
+loadEnv();
 const API_KEY = process.env.OPEN_AI_API_KEY!;
 const openai = new OpenAIApi(new Configuration({ apiKey: API_KEY }));
 
@@ -20,7 +20,7 @@ export async function* streamChatCompletion(params: RequestParams) {
     },
     {
       responseType: "stream",
-    }
+    },
   );
 
   const stream = response.data as unknown as IncomingMessage;
@@ -74,7 +74,7 @@ export const ERROR_CODES = [
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
 export const parseError = (
-  e: any
+  e: any,
 ): { status: number; errorCode: ErrorCode } => {
   try {
     const errorChunks = e.response.data as unknown as IncomingMessage;
