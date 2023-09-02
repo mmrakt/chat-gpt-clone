@@ -2,14 +2,14 @@ import { StreamChatDTO } from "../../constants";
 
 export async function* streamChatCompletion({ params }: StreamChatDTO) {
   const completion = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stream_chat_completion`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/stream_chat_completion`,
     {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify(params),
-    }
+    },
   );
 
   const reader = completion.body?.getReader();
@@ -38,7 +38,7 @@ export async function* streamChatCompletion({ params }: StreamChatDTO) {
 }
 
 const parseError = async (
-  reader: ReadableStreamDefaultReader<Uint8Array>
+  reader: ReadableStreamDefaultReader<Uint8Array>,
 ): Promise<{ errorCode?: ErrorCode }> => {
   const decoder = new TextDecoder("utf-8");
 
@@ -63,7 +63,10 @@ export const ERROR_CODES = [
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
 export class CompletionError extends Error {
-  constructor(public statusCode: number, public errorCode?: ErrorCode) {
+  constructor(
+    public statusCode: number,
+    public errorCode?: ErrorCode,
+  ) {
     super();
   }
 }

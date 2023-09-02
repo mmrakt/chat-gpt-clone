@@ -7,9 +7,17 @@ import SendMessage from "./SendMessage";
 import PromptForm from "./components/PromptForm";
 import Help from "./components/Help";
 import { ASSIGNABLE_MODEL, StreamChatDTO } from "../constants";
-import { CreateChatCompletionRequest } from "openai";
+import {
+  ChatCompletionRequestMessageRoleEnum,
+  CreateChatCompletionRequest,
+} from "openai";
 import { useState } from "react";
 import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
+import {
+  CreateMessageRole,
+  Message,
+  useCreateMessage,
+} from "./hooks/useCreateMessage";
 
 const helpers = [
   {
@@ -36,7 +44,7 @@ const helpers = [
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  const [messages, setMessages] = useState<string[]>([]);
+  const { messages, setMessages } = useCreateMessage();
 
   const handleSubmit = async (content: string) => {
     const params: StreamChatDTO["params"] = {
@@ -49,15 +57,13 @@ export default function Home() {
       ],
     };
 
+    registerMessage("user", content);
+
     await streamChatCompletionMutation.start({
       params,
-      onSuccess: async (content) => {
-        // await createMessageMutation.mutateAsync({
-        //   chatId: chat.id,
-        //   role: "assistant",
-        //   content,
-        // });
-        // streamChatCompletionMutation.setContent(undefined);
+      onSuccess: async (answer) => {
+        registerMessage("assistant", answer);
+        streamChatCompletionMutation.setContent(undefined);
       },
       onError: (errorCode) => {
         // const message =
@@ -70,6 +76,17 @@ export default function Home() {
       },
     });
   };
+  const registerMessage = (role: CreateMessageRole, content: string) => {
+    const newMessage: Message = {
+      chatId: "hoge",
+      role,
+      content,
+    };
+    setMessages((messages) => {
+      return { ...messages, newMessage };
+    });
+  };
+
   return (
     <>
       <Header />

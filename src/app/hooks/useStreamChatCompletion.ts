@@ -41,8 +41,6 @@ export const useStreamChatCompletion = () => {
     }
   };
 
-  console.log(content);
-
   return {
     content,
     setContent,

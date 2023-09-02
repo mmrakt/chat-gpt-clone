@@ -16,7 +16,7 @@ const SendMessage: React.FC<Props> = ({ enabled, className }) => {
           "m-1 h-4 w-4 text-gray-800 dark:text-gray-600 md:m-0",
           className,
         )}
-        stroke-width="2"
+        strokeWidth="2"
       >
         {/* TODO: add transition */}
         <path
