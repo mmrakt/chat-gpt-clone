@@ -35,3 +35,5 @@ export const MODEL_INFO = {
 export type StreamChatDTO = {
   params: Pick<CreateChatCompletionRequest, "model" | "messages">;
 };
+
+export type LocalStorageKey = "messages";

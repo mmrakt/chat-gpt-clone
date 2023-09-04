@@ -2,6 +2,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { ChatCompletionRequestMessageRoleEnum } from "openai";
 
 export type Message = {
+  id: string;
   chatId: string;
   role: "user" | "assistant";
   content: string;

@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Star from "./Star";
 import Lock from "./Lock";
+import { useReadLocalStorage } from "usehooks-ts";
 
 const Header = () => {
+  const messages = useReadLocalStorage("");
   return (
     <header className="flex justify-center px-2 py-6">
       <div className=""></div>
