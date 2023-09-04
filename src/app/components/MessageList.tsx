@@ -8,7 +8,6 @@ type Props = {
 };
 
 const MessageList = ({ messages, isGenerating }: Props) => {
-  console.log(messages);
   return (
     <ul className="">
       {messages.map((message) => (

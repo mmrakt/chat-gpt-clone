@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import useAutosizeTextArea from "../hooks/useAutosizeTextArea";
-import SendMessage from "../SendMessage";
+import SendMessage from "./Icons/SendMessage";
 import { twMerge } from "tailwind-merge";
 
 type Props = {

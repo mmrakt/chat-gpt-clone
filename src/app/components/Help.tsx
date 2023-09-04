@@ -2,8 +2,8 @@
 
 import { Fragment, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import ExternalLink from "../ExternalLink";
-import KeyboardShortcuts from "../KeyboardShortcuts";
+import ExternalLink from "./Icons/ExternalLink";
+import KeyboardShortcuts from "./Icons/KeyboardShortcuts";
 import { Menu, Transition } from "@headlessui/react";
 
 const Help = () => {

@@ -1,17 +1,18 @@
 import Image from "next/image";
-import Star from "./Star";
-import Lock from "./Lock";
+import Star from "./components/Icons/Star";
+import Lock from "./components/Icons/Lock";
 import { useReadLocalStorage } from "usehooks-ts";
 import { useReadStorage } from "./hooks/useStorage";
 import { Message } from "./hooks/useCreateMessage";
-import Upload from "./Upload";
+import Upload from "./components/Icons/Upload";
 
 const Header = () => {
   const messages = useReadStorage<Message[]>("messages");
+
   return (
     <header className="">
-      {messages?.length === 0 ? (
-        <div className="flex justify-center px-2">
+      {!messages ? (
+        <div className="flex justify-center px-2 py-5">
           <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
             <button className="flex w-36 items-center justify-center gap-2 rounded-lg bg-white py-2.5 text-gray-700 dark:bg-gray-500 ">
               <Image src="/spark.svg" alt="" width={16} height={16} />
