@@ -11,12 +11,10 @@ type Props = {
 };
 
 const MessageItem = ({ message }: Props) => {
-  //   const isUser = useMemo(() => message.role === "user", [message]);
-
   return (
     <div
       className={twMerge(
-        "p-6",
+        "group p-6",
         message.role === "assistant" ? "bg-gray-500" : "",
       )}
     >
@@ -27,11 +25,33 @@ const MessageItem = ({ message }: Props) => {
             message.role === "assistant" ? "bg-green-500" : "bg-gray-600",
           )}
         >
-          {message.role === "assistant" ? <ChatGpt /> : <Icon name="avatar" />}
+          {message.role === "assistant" ? (
+            <ChatGpt />
+          ) : (
+            <Icon name="avatar" className="text-gray-900" size={24} />
+          )}
         </div>
-        <div className="">
+        <div className="flex w-full flex-col gap-7 lg:flex-row lg:justify-between">
           <MarkdownRenderer>{message.content}</MarkdownRenderer>
-          <div className=""></div>
+          {message.role === "assistant" ? (
+            <p className="flex justify-end gap-3">
+              <button className="">
+                <Icon name="clipboard" className="text-gray-900" />
+              </button>
+              <button className="ml-1">
+                <Icon name="good" />
+              </button>
+              <button className="">
+                <Icon name="bad" />
+              </button>
+            </p>
+          ) : (
+            <p className="flex justify-end lg:hidden lg:group-hover:block">
+              <button className="">
+                <Icon name="edit" />
+              </button>
+            </p>
+          )}
         </div>
       </div>
     </div>

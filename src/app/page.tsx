@@ -91,7 +91,7 @@ export default function Home() {
           />
         )}
         <div className="absolute bottom-6 left-8 right-8 mx-auto max-w-3xl">
-          {messages.length !== 0 && <PromptHelpers />}
+          {messages.length === 0 && <PromptHelpers />}
           <div className="mt-4">
             <PromptForm onSubmit={handleSubmit} />
           </div>
