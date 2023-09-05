@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import useAutosizeTextArea from "../hooks/useAutosizeTextArea";
-import SendMessage from "./Icons/SendMessage";
 import { twMerge } from "tailwind-merge";
+import { SvgIcon } from "./SvgIcon";
 
 type Props = {
   onSubmit: (content: string) => void;
@@ -40,7 +40,13 @@ const PromptForm = ({ onSubmit }: Props) => {
           content !== "" ? "bg-green-500" : "",
         )}
       >
-        <SendMessage enabled={!!content} />
+        <SvgIcon
+          name="sendMessage"
+          className={twMerge(
+            !!content ? "text-white" : "text-gray-800 dark:text-gray-700",
+          )}
+          fillColor={!!content ? "#fff" : ""}
+        />
       </button>
     </div>
   );

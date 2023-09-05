@@ -1,4 +1,4 @@
-import SendMessage from "./Icons/SendMessage";
+import { SvgIcon } from "./SvgIcon";
 
 const PromptHelpers = () => {
   const helpers = [
@@ -37,7 +37,10 @@ const PromptHelpers = () => {
             </span>
           </div>
           <div className="absolute right-3 hidden group-hover:block">
-            <SendMessage className="text-gray-200 dark:text-gray-800" />
+            <SvgIcon
+              name="sendMessage"
+              className="text-gray-200 dark:text-gray-800"
+            />
           </div>
         </button>
       ))}

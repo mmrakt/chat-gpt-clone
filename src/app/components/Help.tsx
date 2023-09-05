@@ -2,9 +2,8 @@
 
 import { Fragment, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import ExternalLink from "./Icons/ExternalLink";
-import KeyboardShortcuts from "./Icons/KeyboardShortcuts";
 import { Menu, Transition } from "@headlessui/react";
+import { SvgIcon } from "./SvgIcon";
 
 const Help = () => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -66,12 +65,16 @@ const Help = () => {
                     className={twMerge(modalItemStyle)}
                     target="_blank"
                   >
-                    {item.icon === "externalLink" && <ExternalLink />}
+                    {item.icon === "externalLink" && (
+                      <SvgIcon name="externalLink" />
+                    )}
                     {item.text}
                   </a>
                 ) : (
                   <p className={twMerge(modalItemStyle)}>
-                    {item.icon === "keyboardShortcuts" && <KeyboardShortcuts />}
+                    {item.icon === "keyboardShortcuts" && (
+                      <SvgIcon name="keyboardShortcuts" />
+                    )}
                     {item.text}
                   </p>
                 )}
