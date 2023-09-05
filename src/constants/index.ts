@@ -1,4 +1,7 @@
-import { CreateChatCompletionRequest } from "openai";
+import {
+  ChatCompletionRequestMessageRoleEnum,
+  CreateChatCompletionRequest,
+} from "openai";
 
 export const ASSIGNABLE_MODEL = {
   THREE_TURBO: "gpt-3.5-turbo",
@@ -37,3 +40,15 @@ export type StreamChatDTO = {
 };
 
 export type LocalStorageKey = "messages";
+
+export type Message = {
+  id: string;
+  chatId: string;
+  role: "user" | "assistant";
+  content: string;
+};
+
+export type CreateMessageRole = Extract<
+  ChatCompletionRequestMessageRoleEnum,
+  "user" | "assistant"
+>;

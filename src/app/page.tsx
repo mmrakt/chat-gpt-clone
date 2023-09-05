@@ -2,23 +2,25 @@
 import Header from "./Header";
 import PromptForm from "./components/PromptForm";
 import Help from "./components/Help";
-import { ASSIGNABLE_MODEL, StreamChatDTO } from "../constants";
-import React from "react";
-import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
 import {
+  ASSIGNABLE_MODEL,
   CreateMessageRole,
   Message,
-  useCreateMessage,
-} from "./hooks/useCreateMessage";
+  StreamChatDTO,
+} from "../constants";
+import React from "react";
+import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
 import { v4 as uuidv4 } from "uuid";
 import PromptHelpers from "./components/PromptHelpers";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
+import { useReadStorage, useStorage } from "./hooks/useStorage";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  const { messages, setMessages } = useCreateMessage();
+  const [messages, setMessages] = useLocalStorage("messages", [] as Message[]);
 
   const handleSubmit = async (content: string) => {
     const params: StreamChatDTO["params"] = {
