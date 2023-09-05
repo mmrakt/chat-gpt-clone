@@ -16,11 +16,10 @@ import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
 import { useReadStorage, useStorage } from "./hooks/useStorage";
-import { useLocalStorage } from "usehooks-ts";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  const [messages, setMessages] = useLocalStorage("messages", [] as Message[]);
+  const [messages, setMessages] = useStorage("messages", [] as Message[]);
 
   const handleSubmit = async (content: string) => {
     const params: StreamChatDTO["params"] = {

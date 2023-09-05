@@ -13,8 +13,6 @@ export function useStorage<T>(
 
 type Value<T> = T | null;
 
-export async function useReadStorage<T>(
-  key: LocalStorageKey,
-): Promise<Value<T>> {
+export function useReadStorage<T>(key: LocalStorageKey): Value<T> {
   return useReadLocalStorage(key);
 }

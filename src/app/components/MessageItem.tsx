@@ -1,8 +1,8 @@
 import React from "react";
-import { Message } from "../hooks/useCreateMessage";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
+import { Message } from "../../constants";
 
 type Props = {
   message: Message;
@@ -10,7 +10,7 @@ type Props = {
 
 const MessageItem = ({ message }: Props) => {
   return (
-    <div
+    <li
       className={twMerge(
         "group p-6",
         message.role === "assistant"
@@ -54,7 +54,7 @@ const MessageItem = ({ message }: Props) => {
           )}
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 
