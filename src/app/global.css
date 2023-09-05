@@ -90,6 +90,10 @@ body {
 }
 
 body {
+  font-family: "Helvetica Neue", Arial, "Hiragino Sans", Meiryo, sans-serif;
+}
+
+body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -108,4 +112,111 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/*---- markdown template -----*/
+.markdown {
+  @apply break-words font-normal leading-7 dark:text-gray-800;
+}
+
+.markdown > * + * {
+  @apply mb-4 mt-0;
+}
+
+.markdown li + li {
+  @apply mt-1;
+}
+
+.markdown li > p {
+  @apply leading-7;
+}
+
+.markdown li > p + p {
+  @apply mt-6;
+}
+
+.markdown strong {
+  @apply font-semibold;
+}
+
+.markdown a {
+  @apply font-semibold text-blue-600;
+}
+
+.markdown strong a {
+  @apply font-bold;
+}
+
+.markdown h1 {
+  @apply mb-4 mt-6 border-b pb-2 text-4xl font-semibold leading-tight;
+}
+
+.markdown h2 {
+  @apply mb-4 mt-6 border-b pb-2 text-2xl font-semibold leading-tight;
+}
+
+.markdown h3 {
+  @apply mb-4 mt-6 text-lg font-semibold leading-snug;
+}
+
+.markdown h4 {
+  @apply mb-4 mt-6 text-base font-semibold leading-none;
+}
+
+.markdown h5 {
+  @apply mb-4 mt-6 text-sm font-semibold leading-tight;
+}
+
+.markdown h6 {
+  @apply mb-4 mt-6 text-sm font-semibold leading-tight text-gray-600;
+}
+
+.markdown blockquote {
+  @apply border-l-4 border-gray-300 pl-4 pr-4 text-base text-gray-600;
+}
+
+.markdown code {
+  @apply inline rounded bg-gray-200 px-1 font-mono text-sm text-white;
+}
+
+.markdown pre {
+  @apply rounded-b-md;
+}
+
+.markdown pre code {
+  @apply block overflow-visible rounded-none bg-transparent p-0;
+}
+
+.markdown ul {
+  @apply list-disc;
+}
+
+.markdown ol {
+  @apply list-decimal;
+}
+
+.markdown ul,
+.markdown ol {
+  @apply my-5 pl-8 text-base;
+}
+
+.markdown kbd {
+  @apply inline-block rounded border px-1 py-5 align-middle font-mono text-xs font-normal shadow;
+}
+
+.markdown table {
+  @apply border-gray-600 text-base;
+}
+
+.markdown th {
+  @apply border px-3 py-1;
+}
+
+.markdown td {
+  @apply border px-3 py-1;
+}
+
+/* Override pygments style background color. */
+.markdown .highlight pre {
+  @apply bg-gray-100 !important;
 }

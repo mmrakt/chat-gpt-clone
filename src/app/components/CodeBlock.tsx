@@ -17,7 +17,7 @@ export const CodeBlock: CodeComponent = (options) => {
 
   return (
     <div className="">
-      <div className="flex justify-between">
+      <div className="flex justify-between rounded-t-md bg-gray-400 px-4 py-2 text-xs text-gray-800">
         <span>{lang}</span>
 
         {/* <Flex
@@ -34,7 +34,11 @@ export const CodeBlock: CodeComponent = (options) => {
         </Flex>
       </Flex> */}
       </div>
-      <SyntaxHighlighter style={vscDarkPlus} language={lang}>
+      <SyntaxHighlighter
+        style={vscDarkPlus}
+        language={lang}
+        customStyle={{ margin: "0px" }}
+      >
         {String(children).replace(/\n$/, "")}
       </SyntaxHighlighter>
     </div>
