@@ -1,15 +1,9 @@
 "use client";
-import Image from "next/image";
-import styles from "./page.module.css";
 import Header from "./Header";
 import PromptForm from "./components/PromptForm";
 import Help from "./components/Help";
 import { ASSIGNABLE_MODEL, StreamChatDTO } from "../constants";
-import {
-  ChatCompletionRequestMessageRoleEnum,
-  CreateChatCompletionRequest,
-} from "openai";
-import React, { useState } from "react";
+import React from "react";
 import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
 import {
   CreateMessageRole,
@@ -17,11 +11,10 @@ import {
   useCreateMessage,
 } from "./hooks/useCreateMessage";
 import { v4 as uuidv4 } from "uuid";
-import MessageList from "./components/MessageList";
 import PromptHelpers from "./components/PromptHelpers";
 import { twMerge } from "tailwind-merge";
-// import Cycle from "./components/Cycle";
-import Cycle from "../../public/cycle.svg";
+import { SvgIcon } from "./components/SvgIcon";
+import MessageItem from "./components/MessageItem";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -84,18 +77,31 @@ export default function Home() {
             </h1>
           </div>
         )}
-        {messages.length !== 0 && (
-          <MessageList
-            messages={messages}
-            isGenerating={streamChatCompletionMutation.isLoading}
-          />
-        )}
-        <div className="absolute bottom-6 left-8 right-8 mx-auto max-w-3xl">
+        <ul className="pb-48 dark:bg-gray-400">
+          {messages.length !== 0 &&
+            messages.map((message) => (
+              <MessageItem message={message} key={message.id} />
+            ))}
+          {streamChatCompletionMutation.isLoading && (
+            <MessageItem
+              message={{
+                id: "newMessage",
+                chatId: "hoge",
+                role: "assistant",
+                content: streamChatCompletionMutation.content ?? "",
+              }}
+            />
+          )}
+        </ul>
+        <div className="absolute bottom-6 left-8 right-8 z-10 mx-auto max-w-3xl">
           {messages.length === 0 && <PromptHelpers />}
           {messages.length !== 0 && (
             <div className="flex justify-end">
-              <button className="flex items-center gap-2 rounded border-[1px] px-3 py-2 text-sm text-gray-800 dark:border-gray-600">
-                <Cycle className="text-gray-400 dark:text-gray-800" />
+              <button className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800">
+                <SvgIcon
+                  name="cycle"
+                  className="text-gray-400 dark:text-gray-800"
+                />
                 Regenerate
               </button>
             </div>
