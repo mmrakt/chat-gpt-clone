@@ -81,6 +81,24 @@ export default function Home() {
     }
   };
 
+  // const createMetaTitle = () => {
+  //   const defaultTitle = "ChatGPT";
+  //   if (messages.length === 0) {
+  //     return defaultTitle;
+  //   }
+  //   const previousMessages = messages.slice(-2);
+  //   previousMessages.forEach((message) => {
+  //     if (message.role === "user") {
+  //       const title =
+  //         message.content.length >= 20
+  //           ? message.content.slice(20) + "..."
+  //           : message.content;
+  //       return `User request: ${title}`;
+  //     }
+  //   });
+  //   return defaultTitle;
+  // };
+
   return (
     <>
       <Header />

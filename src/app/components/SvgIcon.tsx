@@ -12,6 +12,8 @@ import externalLink from "../../../public/external-link.svg";
 import keyboardShortcuts from "../../../public/keyboard-shortcuts.svg";
 import sendMessage from "../../../public/send-message.svg";
 import square from "../../../public/square.svg";
+import plus from "../../../public/plus.svg";
+import hamburger from "../../../public/hamburger.svg";
 import { twMerge } from "tailwind-merge";
 
 const icons = {
@@ -29,6 +31,8 @@ const icons = {
   keyboardShortcuts,
   sendMessage,
   square,
+  plus,
+  hamburger,
 };
 
 type Name = keyof typeof icons;

@@ -11,6 +11,15 @@ const Header = () => {
   return (
     <header className="">
       <Suspense fallback="">
+        <div className="flex items-center justify-between bg-gray-400 px-4 py-2 text-gray-800 md:hidden">
+          <button className="">
+            <SvgIcon name="hamburger" className="" size={24} />
+          </button>
+          <span className="text-base">New chat</span>
+          <button className="">
+            <SvgIcon name="plus" className="" size={24} />
+          </button>
+        </div>
         {messages.length === 0 ? (
           <div className="flex justify-center px-2 py-5">
             <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
@@ -28,7 +37,7 @@ const Header = () => {
             </div>
           </div>
         ) : (
-          <div className="border-gray-850 flex items-center justify-between border-b-[1px] px-4 py-5 text-gray-800 dark:border-gray-200">
+          <div className="flex items-center justify-between border-b-[1px] border-gray-850 px-4 py-5 text-gray-800 dark:border-gray-200">
             <span className=""></span>
             <span className="text-sm text-gray-500 dark:text-gray-800">
               Default (GPT-3.5)
