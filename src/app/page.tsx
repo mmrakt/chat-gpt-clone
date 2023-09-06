@@ -15,14 +15,19 @@ import PromptHelpers from "./components/PromptHelpers";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
-import { useReadStorage, useStorage } from "./hooks/useStorage";
+import { useStorage } from "./hooks/useStorage";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  const [messages, setMessages] = useStorage("messages", [] as Message[]);
+  let [messages, setMessages] = useStorage("messages", [] as Message[]);
 
   const handleSubmit = async (content: string) => {
-    const params: StreamChatDTO["params"] = {
+    registerMessage("user", content);
+    await startCompletion(createParams(content));
+  };
+
+  const createParams = (content: string): StreamChatDTO["params"] => {
+    return {
       model: ASSIGNABLE_MODEL.THREE_TURBO,
       messages: [
         {
@@ -31,9 +36,9 @@ export default function Home() {
         },
       ],
     };
+  };
 
-    registerMessage("user", content);
-
+  const startCompletion = async (params: StreamChatDTO["params"]) => {
     await streamChatCompletionMutation.start({
       params,
       onSuccess: async (answer) => {
@@ -51,6 +56,7 @@ export default function Home() {
       },
     });
   };
+
   const registerMessage = (role: CreateMessageRole, content: string) => {
     const newMessage: Message = {
       id: uuidv4(),
@@ -61,6 +67,17 @@ export default function Home() {
     setMessages((messages) => {
       return [...messages, newMessage];
     });
+  };
+
+  const handleRegenerate = () => {
+    setMessages((messages) => {
+      return messages.slice(0, -1);
+    });
+    const previousPromptMessage = messages.slice(-2, -1)[0];
+    if (previousPromptMessage.role === "user") {
+      const params = createParams(previousPromptMessage.content);
+      startCompletion(params);
+    }
   };
 
   return (
@@ -98,13 +115,26 @@ export default function Home() {
           {messages.length === 0 && <PromptHelpers />}
           {messages.length !== 0 && (
             <div className="flex justify-end">
-              <button className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800">
-                <SvgIcon
-                  name="cycle"
-                  className="text-gray-400 dark:text-gray-800"
-                />
-                Regenerate
-              </button>
+              {streamChatCompletionMutation.isLoading ? (
+                <button className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800">
+                  <SvgIcon
+                    name="square"
+                    className="text-gray-400 dark:text-gray-800"
+                  />
+                  Stop generating
+                </button>
+              ) : (
+                <button
+                  onClick={handleRegenerate}
+                  className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800"
+                >
+                  <SvgIcon
+                    name="cycle"
+                    className="text-gray-400 dark:text-gray-800"
+                  />
+                  Regenerate
+                </button>
+              )}
             </div>
           )}
           <div className="mt-4">

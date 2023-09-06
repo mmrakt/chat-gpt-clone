@@ -11,6 +11,7 @@ import upload from "../../../public/upload.svg";
 import externalLink from "../../../public/external-link.svg";
 import keyboardShortcuts from "../../../public/keyboard-shortcuts.svg";
 import sendMessage from "../../../public/send-message.svg";
+import square from "../../../public/square.svg";
 import { twMerge } from "tailwind-merge";
 
 const icons = {
@@ -27,6 +28,7 @@ const icons = {
   externalLink,
   keyboardShortcuts,
   sendMessage,
+  square,
 };
 
 type Name = keyof typeof icons;

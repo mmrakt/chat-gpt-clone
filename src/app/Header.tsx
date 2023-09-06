@@ -4,22 +4,14 @@ import { useReadStorage } from "./hooks/useStorage";
 import { SvgIcon } from "./components/SvgIcon";
 import { Suspense, useContext } from "react";
 import { Message } from "../constants";
-import { IsPromptedContext } from "./components/providers/IsPromptedProvider";
 
 const Header = () => {
-  // TODO: SSでの呼び出しを抑制（nullになる）
-  let messages = useReadStorage<Message[]>("messages");
+  const messages = useReadStorage<Message[]>("messages") ?? [];
 
-  if (!messages && typeof window !== "undefined") {
-    messages = [];
-  }
-  // const {isPrompted} = useContext(IsPromptedContext)
-
-  console.log(messages);
   return (
     <header className="">
       <Suspense fallback="">
-        {messages?.length === 0 ? (
+        {messages.length === 0 ? (
           <div className="flex justify-center px-2 py-5">
             <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
               <button className="flex w-36 items-center justify-center gap-2 rounded-lg bg-white py-2.5 text-gray-700 dark:bg-gray-500 ">
