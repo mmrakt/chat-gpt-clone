@@ -16,6 +16,7 @@ import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
 import { useStorage } from "./hooks/useStorage";
+import PromptingManageButton from "./components/PromptingManageButton";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -114,28 +115,10 @@ export default function Home() {
         <div className="absolute bottom-6 left-8 right-8 z-10 mx-auto max-w-3xl">
           {messages.length === 0 && <PromptHelpers />}
           {messages.length !== 0 && (
-            <div className="flex justify-end">
-              {streamChatCompletionMutation.isLoading ? (
-                <button className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800">
-                  <SvgIcon
-                    name="square"
-                    className="text-gray-400 dark:text-gray-800"
-                  />
-                  Stop generating
-                </button>
-              ) : (
-                <button
-                  onClick={handleRegenerate}
-                  className="flex items-center gap-2 rounded border-[1px] border-gray-800 bg-white px-3 py-2 text-sm text-gray-400 dark:border-gray-600 dark:bg-gray-400 dark:text-gray-800"
-                >
-                  <SvgIcon
-                    name="cycle"
-                    className="text-gray-400 dark:text-gray-800"
-                  />
-                  Regenerate
-                </button>
-              )}
-            </div>
+            <PromptingManageButton
+              isGenerating={streamChatCompletionMutation.isLoading}
+              onRegenerate={handleRegenerate}
+            />
           )}
           <div className="mt-4">
             <PromptForm onSubmit={handleSubmit} />
