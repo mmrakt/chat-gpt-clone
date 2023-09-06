@@ -11,7 +11,7 @@ type Props = {
 
 const PromptForm = ({ onSubmit }: Props) => {
   const [content, setContent] = useState("");
-  const textAreaRef = useRef<HTMLTextAreaElement|null>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, content);
 
   const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,7 +22,9 @@ const PromptForm = ({ onSubmit }: Props) => {
 
   const handleSubmit = () => {
     onSubmit(content);
-    textAreaRef.current = null
+    if (textAreaRef.current) {
+      textAreaRef.current.value = "";
+    }
   };
   return (
     <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white p-4 shadow-sm dark:bg-gray-500">
