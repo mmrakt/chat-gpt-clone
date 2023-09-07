@@ -18,10 +18,10 @@ const authOptions = {
     }),
   ],
   adapter: PrismaAdapter(prisma),
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "auth/login",
+    signIn: "/signin",
   },
 };
 
-export default authHandler;
+export { authHandler as GET, authHandler as POST };

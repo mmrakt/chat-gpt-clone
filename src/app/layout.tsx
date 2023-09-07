@@ -4,6 +4,7 @@ import "./global.css";
 import ThemeProvider from "./components/providers/ThemeProvider";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import AuthProvider from "./components/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,13 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider>
-          <Suspense fallback="">
-            <main className="h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white ">
-              <DisableSsrWrapper>{children}</DisableSsrWrapper>
-            </main>
-          </Suspense>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <Suspense fallback="">
+              <main className="h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white ">
+                <DisableSsrWrapper>{children}</DisableSsrWrapper>
+              </main>
+            </Suspense>
+          </ThemeProvider>
+        </AuthProvider>
         <aside className=""></aside>
       </body>
     </html>

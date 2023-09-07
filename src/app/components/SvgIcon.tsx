@@ -14,6 +14,7 @@ import sendMessage from "../../../public/send-message.svg";
 import square from "../../../public/square.svg";
 import plus from "../../../public/plus.svg";
 import hamburger from "../../../public/hamburger.svg";
+import github from "../../../public/github.svg";
 import { twMerge } from "tailwind-merge";
 
 const icons = {
@@ -33,6 +34,7 @@ const icons = {
   square,
   plus,
   hamburger,
+  github,
 };
 
 type Name = keyof typeof icons;
