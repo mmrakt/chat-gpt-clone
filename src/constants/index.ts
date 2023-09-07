@@ -41,9 +41,11 @@ export type StreamChatDTO = {
 
 export type LocalStorageKey = "messages";
 
-export type Message = {
+// TODO: prismaの型と共有
+export type IMessage = {
   id: string;
   chatId: string;
+  userId: string;
   role: "user" | "assistant";
   content: string;
 };

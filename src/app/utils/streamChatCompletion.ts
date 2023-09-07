@@ -2,7 +2,7 @@ import { StreamChatDTO } from "../../constants";
 
 export async function* streamChatCompletion({ params }: StreamChatDTO) {
   const completion = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/stream_chat_completion`,
+    `http://localhost:3000/api/stream_chat_completion`,
     {
       headers: {
         "Content-Type": "application/json",

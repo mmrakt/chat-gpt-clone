@@ -5,6 +5,7 @@ import ThemeProvider from "./components/providers/ThemeProvider";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import AuthProvider from "./components/providers/AuthProvider";
+import QueryClientProvider from "./components/providers/QueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ const DisableSsrWrapper = dynamic(
   () => import("./components/DisableSsrWrapper"),
   { ssr: false },
 );
+
 export default function RootLayout({
   children,
 }: {
@@ -27,11 +29,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ThemeProvider>
-            <Suspense fallback="">
-              <main className="h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white ">
-                <DisableSsrWrapper>{children}</DisableSsrWrapper>
-              </main>
-            </Suspense>
+            <QueryClientProvider>
+              <Suspense fallback="">
+                <main className="h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white ">
+                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
+                </main>
+              </Suspense>
+            </QueryClientProvider>
           </ThemeProvider>
         </AuthProvider>
         <aside className=""></aside>

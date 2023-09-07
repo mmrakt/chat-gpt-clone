@@ -5,7 +5,7 @@ import Help from "./components/Help";
 import {
   ASSIGNABLE_MODEL,
   CreateMessageRole,
-  Message,
+  IMessage,
   StreamChatDTO,
 } from "../constants";
 import React from "react";
@@ -17,10 +17,18 @@ import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
 import { useStorage } from "./hooks/useStorage";
 import PromptingManageButton from "./components/PromptingManageButton";
+import { useSession } from "next-auth/react";
+import useCreateMessage from "./hooks/messages/useCreateMessage";
+import { useFetchMessages } from "./hooks/messages/useFetchMessages";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  let [messages, setMessages] = useStorage("messages", [] as Message[]);
+  // let [, setMessages] = useStorage("messages", [] as IMessage[]);
+  const { data: session } = useSession();
+  const createMessageMutation = useCreateMessage();
+  const { data: messages } = useFetchMessages();
+
+  if (!session || !messages) return null;
 
   const handleSubmit = async (content: string) => {
     registerMessage("user", content);
@@ -59,26 +67,29 @@ export default function Home() {
   };
 
   const registerMessage = (role: CreateMessageRole, content: string) => {
-    const newMessage: Message = {
+    const newMessage: IMessage = {
       id: uuidv4(),
       chatId: "hoge",
       role,
+      userId: session.user.id,
       content,
     };
-    setMessages((messages) => {
-      return [...messages, newMessage];
-    });
+    // setMessages((messages) => {
+    //   return [...messages, newMessage];
+    // });
+
+    createMessageMutation.mutate(newMessage);
   };
 
   const handleRegenerate = () => {
-    setMessages((messages) => {
-      return messages.slice(0, -1);
-    });
-    const previousPromptMessage = messages.slice(-2, -1)[0];
-    if (previousPromptMessage.role === "user") {
-      const params = createParams(previousPromptMessage.content);
-      startCompletion(params);
-    }
+    // setMessages((messages) => {
+    //   return messages.slice(0, -1);
+    // });
+    // const previousPromptMessage = messages.slice(-2, -1)[0];
+    // if (previousPromptMessage.role === "user") {
+    //   const params = createParams(previousPromptMessage.content);
+    //   startCompletion(params);
+    // }
   };
 
   // const createMetaTitle = () => {
@@ -101,7 +112,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div
         className={twMerge(
           messages.length === 0 ? "mx-auto max-w-3xl px-8" : "",

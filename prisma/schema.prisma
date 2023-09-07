@@ -45,6 +45,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  messages      Message[]
 }
 
 model VerificationToken {
@@ -55,16 +56,11 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Role {
-  id       Int       @id @default(autoincrement())
-  name     String
-  messages Message[]
-}
-
 model Message {
   id      String @id @default(cuid())
   chatId  String
-  roleId  Int
-  role    Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    String
   content String
 }
