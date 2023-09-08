@@ -31,9 +31,7 @@ export default function RootLayout({
           <ThemeProvider>
             <QueryClientProvider>
               <Suspense fallback="">
-                <main className="h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white ">
-                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
-                </main>
+                <DisableSsrWrapper>{children}</DisableSsrWrapper>
               </Suspense>
             </QueryClientProvider>
           </ThemeProvider>

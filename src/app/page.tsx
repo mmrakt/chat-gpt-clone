@@ -8,7 +8,7 @@ import {
   IMessage,
   StreamChatDTO,
 } from "../constants";
-import React from "react";
+import React, { useState } from "react";
 import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
 import { v4 as uuidv4 } from "uuid";
 import PromptHelpers from "./components/PromptHelpers";
@@ -19,6 +19,8 @@ import { useSession } from "next-auth/react";
 import useCreateMessage from "./hooks/messages/useCreateMessage";
 import { useFetchMessages } from "./hooks/messages/useFetchMessages";
 import useDeleteMessage from "./hooks/messages/useDeleteMessage";
+import { SvgIcon } from "./components/SvgIcon";
+import SideMenu from "./components/SideMenu";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -26,6 +28,7 @@ export default function Home() {
   const createMessageMutation = useCreateMessage();
   const deleteMessageMutation = useDeleteMessage();
   const { data: messages } = useFetchMessages();
+  const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
 
   if (!session || !messages) return null;
 
@@ -107,52 +110,69 @@ export default function Home() {
   // };
 
   return (
-    <>
-      <Header hasMessage={!!messages.length} />
-      <div
+    <div className="relative h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
+      <button
+        onClick={() => setIsOpenSideMenu(true)}
         className={twMerge(
-          messages.length === 0 ? "mx-auto max-w-3xl px-8" : "",
+          "absolute left-5 top-5 hidden p-3 md:block",
+          isOpenSideMenu ? "md:hidden" : "",
         )}
       >
-        {messages.length === 0 && (
-          <div className="flex justify-center">
-            <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-600">
-              ChatGPT
-            </h1>
+        <SvgIcon name="sideMenu" className="" />
+      </button>
+      <div className="flex">
+        <SideMenu
+          isOpen={isOpenSideMenu}
+          onClose={() => setIsOpenSideMenu(false)}
+        />
+        <main className="mx-auto">
+          <Header hasMessage={!!messages.length} />
+          <div
+            className={twMerge(
+              messages.length === 0 ? "mx-auto max-w-3xl px-8" : "",
+            )}
+          >
+            {messages.length === 0 && (
+              <div className="flex justify-center">
+                <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-600">
+                  ChatGPT
+                </h1>
+              </div>
+            )}
+            <ul className="pb-48 dark:bg-gray-400">
+              {messages.length !== 0 &&
+                messages.map((message) => (
+                  <MessageItem message={message} key={message.id} />
+                ))}
+              {streamChatCompletionMutation.isLoading && (
+                <MessageItem
+                  message={{
+                    id: "newMessage",
+                    chatId: "hoge",
+                    role: "assistant",
+                    content: streamChatCompletionMutation.content ?? "",
+                  }}
+                />
+              )}
+            </ul>
+            <div className="bottom-6 left-8 right-8 z-10 z-10 mx-auto max-w-3xl">
+              {messages.length === 0 && <PromptHelpers />}
+              {messages.length !== 0 && (
+                <PromptingManageButton
+                  isGenerating={streamChatCompletionMutation.isLoading}
+                  onRegenerate={handleRegenerate}
+                />
+              )}
+              <div className="mt-4">
+                <PromptForm onSubmit={handleSubmit} />
+              </div>
+              <div className="mt-4 ">
+                <Help />
+              </div>
+            </div>
           </div>
-        )}
-        <ul className="pb-48 dark:bg-gray-400">
-          {messages.length !== 0 &&
-            messages.map((message) => (
-              <MessageItem message={message} key={message.id} />
-            ))}
-          {streamChatCompletionMutation.isLoading && (
-            <MessageItem
-              message={{
-                id: "newMessage",
-                chatId: "hoge",
-                role: "assistant",
-                content: streamChatCompletionMutation.content ?? "",
-              }}
-            />
-          )}
-        </ul>
-        <div className="absolute bottom-6 left-8 right-8 z-10 mx-auto max-w-3xl">
-          {messages.length === 0 && <PromptHelpers />}
-          {messages.length !== 0 && (
-            <PromptingManageButton
-              isGenerating={streamChatCompletionMutation.isLoading}
-              onRegenerate={handleRegenerate}
-            />
-          )}
-          <div className="mt-4">
-            <PromptForm onSubmit={handleSubmit} />
-          </div>
-          <div className="mt-4 ">
-            <Help />
-          </div>
-        </div>
+        </main>
       </div>
-    </>
+    </div>
   );
 }
