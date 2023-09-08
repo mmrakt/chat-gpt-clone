@@ -10,7 +10,7 @@ const useFetchMessages = (): UseQueryResult<Message[]> => {
     queryKey: ["messages", session?.user?.id],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${session?.user?.id}/messages`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages`,
       );
       return res.json();
     },

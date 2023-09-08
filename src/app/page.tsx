@@ -20,12 +20,13 @@ import PromptingManageButton from "./components/PromptingManageButton";
 import { useSession } from "next-auth/react";
 import useCreateMessage from "./hooks/messages/useCreateMessage";
 import { useFetchMessages } from "./hooks/messages/useFetchMessages";
+import useDeleteMessage from "./hooks/messages/useDeleteMessage";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
-  // let [, setMessages] = useStorage("messages", [] as IMessage[]);
   const { data: session } = useSession();
   const createMessageMutation = useCreateMessage();
+  const deleteMessageMutation = useDeleteMessage();
   const { data: messages } = useFetchMessages();
 
   if (!session || !messages) return null;
@@ -74,22 +75,19 @@ export default function Home() {
       userId: session.user.id,
       content,
     };
-    // setMessages((messages) => {
-    //   return [...messages, newMessage];
-    // });
 
     createMessageMutation.mutate(newMessage);
   };
 
   const handleRegenerate = () => {
-    // setMessages((messages) => {
-    //   return messages.slice(0, -1);
-    // });
-    // const previousPromptMessage = messages.slice(-2, -1)[0];
-    // if (previousPromptMessage.role === "user") {
-    //   const params = createParams(previousPromptMessage.content);
-    //   startCompletion(params);
-    // }
+    const lastMessageId = messages.slice(-1)[0].id;
+    // TODO: 一瞬AIの解答が二重に見えてしまう対処
+    deleteMessageMutation.mutate(lastMessageId);
+    const lastPromptMessage = messages.slice(-2, -1)[0];
+    if (lastPromptMessage.role === "user") {
+      const params = createParams(lastPromptMessage.content);
+      startCompletion(params);
+    }
   };
 
   // const createMetaTitle = () => {
