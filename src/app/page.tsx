@@ -13,9 +13,7 @@ import { useStreamChatCompletion } from "./hooks/useStreamChatCompletion";
 import { v4 as uuidv4 } from "uuid";
 import PromptHelpers from "./components/PromptHelpers";
 import { twMerge } from "tailwind-merge";
-import { SvgIcon } from "./components/SvgIcon";
 import MessageItem from "./components/MessageItem";
-import { useStorage } from "./hooks/useStorage";
 import PromptingManageButton from "./components/PromptingManageButton";
 import { useSession } from "next-auth/react";
 import useCreateMessage from "./hooks/messages/useCreateMessage";
@@ -110,7 +108,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <Header /> */}
+      <Header hasMessage={!!messages.length} />
       <div
         className={twMerge(
           messages.length === 0 ? "mx-auto max-w-3xl px-8" : "",

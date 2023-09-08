@@ -1,13 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useReadStorage } from "./hooks/useStorage";
 import { SvgIcon } from "./components/SvgIcon";
-import { Suspense, useContext } from "react";
-import { Message } from "../constants";
+import { Suspense } from "react";
 
-const Header = () => {
-  const messages = useReadStorage<Message[]>("messages") ?? [];
-
+type Props = {
+  hasMessage: boolean;
+};
+const Header = ({ hasMessage }: Props) => {
   return (
     <header className="">
       <Suspense fallback="">
@@ -20,7 +19,7 @@ const Header = () => {
             <SvgIcon name="plus" className="" size={24} />
           </button>
         </div>
-        {messages.length === 0 ? (
+        {!hasMessage ? (
           <div className="flex justify-center px-2 py-5">
             <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
               <button className="flex w-36 items-center justify-center gap-2 rounded-lg bg-white py-2.5 text-gray-700 dark:bg-gray-500 ">
