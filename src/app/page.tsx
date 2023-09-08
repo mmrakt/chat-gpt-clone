@@ -21,6 +21,7 @@ import { useFetchMessages } from "./hooks/messages/useFetchMessages";
 import useDeleteMessage from "./hooks/messages/useDeleteMessage";
 import { SvgIcon } from "./components/SvgIcon";
 import SideMenu from "./components/SideMenu";
+import { Transition } from "@headlessui/react";
 
 export default function Home() {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -120,12 +121,23 @@ export default function Home() {
       >
         <SvgIcon name="sideMenu" className="" />
       </button>
-      <div className="flex">
-        <SideMenu
-          isOpen={isOpenSideMenu}
-          onClose={() => setIsOpenSideMenu(false)}
-        />
-        <main className="mx-auto">
+      <div className={twMerge("flex")}>
+        <Transition
+          show={isOpenSideMenu}
+          enter="transition duration-200"
+          enterFrom="-translate-x-64"
+          enterTo="translate-x-0"
+          leave="transition duration-200"
+          leaveFrom="translate-x-0"
+          leaveTo="-translate-x-64"
+        >
+          <SideMenu
+            isOpen={isOpenSideMenu}
+            onClose={() => setIsOpenSideMenu(false)}
+          />
+        </Transition>
+        {/* TODO: mainもtransitionに追従させる */}
+        <main className={twMerge("mx-auto w-screen")}>
           <Header hasMessage={!!messages.length} />
           <div
             className={twMerge(

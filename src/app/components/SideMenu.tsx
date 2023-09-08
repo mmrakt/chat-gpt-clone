@@ -3,7 +3,6 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
 import Link from "next/link";
-import Avatar from "./Avatar";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
@@ -43,29 +42,30 @@ const SideMenu = ({ isOpen, onClose }: Props) => {
   return (
     <aside
       className={twMerge(
-        "h-screen w-[260px] bg-gray-200 p-2",
-        isOpen ? "" : "hidden",
+        "flex h-screen w-64 flex-col justify-between bg-gray-200 p-2",
       )}
     >
-      <div className="flex w-full gap-2">
-        <button className={twMerge(buttonStyle, "flex-grow")}>
-          <SvgIcon name="plus" className="" />
-          New chat
-        </button>
-        <button className={twMerge(buttonStyle)} onClick={onClose}>
-          <SvgIcon name="sideMenu" className="" />
-        </button>
+      <div>
+        <div className="flex w-full gap-2">
+          <button className={twMerge(buttonStyle, "flex-grow")}>
+            <SvgIcon name="plus" className="" />
+            New chat
+          </button>
+          <button className={twMerge(buttonStyle)} onClick={onClose}>
+            <SvgIcon name="sideMenu" className="" />
+          </button>
+        </div>
+        <ul className="mt-5 flex flex-col">
+          {chatList.map((chat) => (
+            <li className="" key={chat.id}>
+              <Link href={chat.id} className={twMerge(listItemStyle)}>
+                <SvgIcon name="chat" className="" />
+                {chat.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className="mt-5 flex flex-col">
-        {chatList.map((chat) => (
-          <li className="" key={chat.id}>
-            <Link href={chat.id} className={twMerge(listItemStyle)}>
-              <SvgIcon name="chat" className="" />
-              {chat.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
       <div className="mt-5 border-t-[1px] border-gray-600 pt-2">
         <button className={twMerge(listItemStyle)}>
           <SvgIcon name="avatar" className="" />
