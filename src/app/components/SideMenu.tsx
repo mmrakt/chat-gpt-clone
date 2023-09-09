@@ -1,10 +1,12 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import ChatList from "./ChatList";
+import useCreateChat from "../hooks/chats/useCreateChat";
 
 type Props = {
   isOpen: boolean;
@@ -13,32 +15,19 @@ type Props = {
 
 const buttonStyle =
   "flex items-center gap-3 rounded-md border-[1px] border-gray-600 px-4 py-3";
-const listItemStyle =
+export const listItemStyle =
   "flex w-full flex-row items-center gap-2 rounded-md py-3 pl-3 hover:bg-gray-300";
-const chatList = [
-  {
-    id: "001",
-    title: "chat001",
-  },
-  {
-    id: "002",
-    title: "chat002",
-  },
-  {
-    id: "003",
-    title: "chat003",
-  },
-  {
-    id: "004",
-    title: "chat004",
-  },
-  {
-    id: "005",
-    title: "chat005",
-  },
-];
+
 const SideMenu = ({ isOpen, onClose }: Props) => {
   const { data: session } = useSession();
+  const createChatMutation = useCreateChat();
+
+  const handleCreateChat = async () => {
+    if (session?.user.id) {
+      createChatMutation.mutate(session.user.id);
+    }
+  };
+
   return (
     <aside
       className={twMerge(
@@ -47,7 +36,10 @@ const SideMenu = ({ isOpen, onClose }: Props) => {
     >
       <div>
         <div className="flex w-full gap-2">
-          <button className={twMerge(buttonStyle, "flex-grow")}>
+          <button
+            className={twMerge(buttonStyle, "flex-grow")}
+            onClick={handleCreateChat}
+          >
             <SvgIcon name="plus" className="" />
             New chat
           </button>
@@ -55,16 +47,11 @@ const SideMenu = ({ isOpen, onClose }: Props) => {
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>
-        <ul className="mt-5 flex flex-col">
-          {chatList.map((chat) => (
-            <li className="" key={chat.id}>
-              <Link href={chat.id} className={twMerge(listItemStyle)}>
-                <SvgIcon name="chat" className="" />
-                {chat.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-5">
+          <Suspense>
+            <ChatList userId={session?.user.id || ""} />
+          </Suspense>
+        </div>
       </div>
       <div className="mt-5 border-t-[1px] border-gray-600 pt-2">
         <button className={twMerge(listItemStyle)}>

@@ -167,7 +167,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
                 />
               )}
             </ul>
-            <div className="bottom-6 left-8 right-8 z-10 z-10 mx-auto max-w-3xl">
+            <div className="bottom-6 left-8 right-8 z-10 mx-auto max-w-3xl">
               {messages.length === 0 && <PromptHelpers />}
               {messages.length !== 0 && (
                 <PromptingManageButton
