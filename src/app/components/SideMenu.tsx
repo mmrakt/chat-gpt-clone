@@ -2,11 +2,10 @@
 import React, { Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import ChatList from "./ChatList";
-import useCreateChat from "../hooks/chats/useCreateChat";
+import CreateChatButton from "./createChatButton";
 
 type Props = {
   isOpen: boolean;
@@ -14,20 +13,13 @@ type Props = {
   currentChatId: string;
 };
 
-const buttonStyle =
+export const buttonStyle =
   "flex items-center gap-3 rounded-md border-[1px] border-gray-600 px-4 py-3 hover:bg-gray-300";
 export const listItemStyle =
   "flex w-full flex-row items-center gap-2 rounded-md py-3 pl-3 hover:bg-gray-300";
 
 const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
   const { data: session } = useSession();
-  const createChatMutation = useCreateChat();
-
-  const handleCreateChat = async () => {
-    if (session?.user.id) {
-      createChatMutation.mutate(session.user.id);
-    }
-  };
 
   return (
     <aside
@@ -37,13 +29,7 @@ const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
     >
       <div>
         <div className="flex w-full gap-2">
-          <button
-            className={twMerge(buttonStyle, "flex-grow")}
-            onClick={handleCreateChat}
-          >
-            <SvgIcon name="plus" className="" />
-            New chat
-          </button>
+          <CreateChatButton userId={session?.user.id || ""} />
           <button className={twMerge(buttonStyle)} onClick={onClose}>
             <SvgIcon name="sideMenu" className="" />
           </button>

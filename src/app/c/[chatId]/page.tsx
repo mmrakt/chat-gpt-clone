@@ -4,6 +4,7 @@ import PromptForm from "../../components/PromptForm";
 import Help from "../../components/Help";
 import {
   ASSIGNABLE_MODEL,
+  CHAT_TITLE_PREFIX,
   CreateMessageRole,
   IMessage,
   StreamChatDTO,
@@ -22,11 +23,14 @@ import useDeleteMessage from "../../hooks/messages/useDeleteMessage";
 import { SvgIcon } from "../../components/SvgIcon";
 import SideMenu from "../../components/SideMenu";
 import { Transition } from "@headlessui/react";
+import useUpdateChat from "../../hooks/chats/useUpdateChat";
+import { createChatTitle } from "../../utils/createChatTitle";
 
 export default function Page({ params }: { params: { chatId: string } }) {
   const streamChatCompletionMutation = useStreamChatCompletion();
   const { data: session } = useSession();
   const createMessageMutation = useCreateMessage();
+  const updateChatMutation = useUpdateChat();
   const deleteMessageMutation = useDeleteMessage();
   const { data: messages } = useFetchMessages(params.chatId);
   const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
@@ -35,6 +39,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
 
   const handleSubmit = async (content: string) => {
     registerMessage("user", content);
+    updateChatMutation.mutate({
+      id: params.chatId,
+      title: createChatTitle(content),
+    });
     await startCompletion(createParams(content));
   };
 
@@ -72,7 +80,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
   const registerMessage = (role: CreateMessageRole, content: string) => {
     const newMessage: IMessage = {
       id: uuidv4(),
-      chatId: "hoge",
+      chatId: params.chatId,
       role,
       userId: session.user.id,
       content,
@@ -91,24 +99,6 @@ export default function Page({ params }: { params: { chatId: string } }) {
       startCompletion(params);
     }
   };
-
-  // const createMetaTitle = () => {
-  //   const defaultTitle = "ChatGPT";
-  //   if (messages.length === 0) {
-  //     return defaultTitle;
-  //   }
-  //   const previousMessages = messages.slice(-2);
-  //   previousMessages.forEach((message) => {
-  //     if (message.role === "user") {
-  //       const title =
-  //         message.content.length >= 20
-  //           ? message.content.slice(20) + "..."
-  //           : message.content;
-  //       return `User request: ${title}`;
-  //     }
-  //   });
-  //   return defaultTitle;
-  // };
 
   return (
     <div className="relative h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
@@ -161,7 +151,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
                 <MessageItem
                   message={{
                     id: "newMessage",
-                    chatId: "hoge",
+                    chatId: params.chatId,
                     role: "assistant",
                     content: streamChatCompletionMutation.content ?? "",
                   }}

@@ -17,6 +17,9 @@ export const GET = async (req: Request) => {
         equals: userId,
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return NextResponse.json(chats, { status: 200 });

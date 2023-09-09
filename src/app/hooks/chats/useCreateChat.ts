@@ -1,7 +1,9 @@
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 
 const useCreateChat = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: async (userId: string) =>
@@ -11,8 +13,10 @@ const useCreateChat = () => {
           userId,
         }),
       }),
-    onSuccess: () => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries(["chats"]);
+      const newChat = await data.json();
+      router.push(`/c/${newChat.id}`);
     },
   });
 };

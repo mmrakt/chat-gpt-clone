@@ -54,3 +54,5 @@ export type CreateMessageRole = Extract<
   ChatCompletionRequestMessageRoleEnum,
   "user" | "assistant"
 >;
+
+export const CHAT_TITLE_PREFIX = "User Request: ";
