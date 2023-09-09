@@ -1,16 +1,12 @@
 import { useQuery, UseQueryResult } from "react-query";
 import { Message } from "@prisma/client";
-import { useSession } from "next-auth/react";
-import fetchMessages from "../../utils/fetchMessages";
 
-const useFetchMessages = (): UseQueryResult<Message[]> => {
-  const { data: session } = useSession();
-
+const useFetchMessages = (chatId: string): UseQueryResult<Message[]> => {
   return useQuery<Message[]>({
-    queryKey: ["messages", session?.user?.id],
+    queryKey: ["messages", chatId],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages/?chatId=${chatId}`,
       );
       return res.json();
     },

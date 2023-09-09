@@ -1,21 +1,17 @@
 import { Message } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { prisma } from "../../../libs/prisma";
-import { authOptions } from "../auth/[...nextauth]/route";
 
 export const GET = async (req: Request) => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+  const { searchParams } = new URL(req.url);
+  const chatId = searchParams.get("chatId");
+  if (!chatId) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   const messages = await prisma.message.findMany({
     where: {
-      userId: {
-        equals: session.user.id,
+      chatId: {
+        equals: chatId,
       },
     },
   });
@@ -24,12 +20,10 @@ export const GET = async (req: Request) => {
 };
 
 export const POST = async (req: Request) => {
-  const { userId, chatId, content, role } = (await req.json())
-    .message as Message;
+  const { chatId, content, role } = (await req.json()).message as Message;
   try {
     await prisma.message.create({
       data: {
-        userId: userId,
         chatId: chatId,
         content: content,
         role: role,

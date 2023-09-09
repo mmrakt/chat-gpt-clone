@@ -47,7 +47,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  messages      Message[]
+  chats         Chat[]
 }
 
 model VerificationToken {
@@ -63,8 +63,18 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   chatId    String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   role      String
   content   String
+  Chat      Chat[]
+}
+
+model Chat {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messageId String?
+  message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
 }
