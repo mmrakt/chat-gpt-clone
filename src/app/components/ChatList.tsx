@@ -8,16 +8,23 @@ import { useFetchChats } from "../hooks/chats/useFetchChats";
 
 type Props = {
   userId: string;
+  currentChatId: string;
 };
 
-const ChatList = ({ userId }: Props) => {
+const ChatList = ({ userId, currentChatId }: Props) => {
   const { data: chatList } = useFetchChats(userId);
 
   return (
     <ul className="flex flex-col">
       {chatList?.map((chat) => (
         <li className="" key={chat.id}>
-          <Link href={chat.id} className={twMerge(listItemStyle)}>
+          <Link
+            href={chat.id}
+            className={twMerge(
+              listItemStyle,
+              currentChatId === chat.id && "bg-gray-400 hover:bg-gray-400",
+            )}
+          >
             <SvgIcon name="chat" className="" />
             {chat.title}
           </Link>

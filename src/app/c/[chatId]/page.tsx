@@ -134,6 +134,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
           <SideMenu
             isOpen={isOpenSideMenu}
             onClose={() => setIsOpenSideMenu(false)}
+            currentChatId={params.chatId}
           />
         </Transition>
         {/* TODO: mainもtransitionに追従させる */}

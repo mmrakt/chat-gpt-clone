@@ -11,14 +11,15 @@ import useCreateChat from "../hooks/chats/useCreateChat";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  currentChatId: string;
 };
 
 const buttonStyle =
-  "flex items-center gap-3 rounded-md border-[1px] border-gray-600 px-4 py-3";
+  "flex items-center gap-3 rounded-md border-[1px] border-gray-600 px-4 py-3 hover:bg-gray-300";
 export const listItemStyle =
   "flex w-full flex-row items-center gap-2 rounded-md py-3 pl-3 hover:bg-gray-300";
 
-const SideMenu = ({ isOpen, onClose }: Props) => {
+const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
   const { data: session } = useSession();
   const createChatMutation = useCreateChat();
 
@@ -31,7 +32,7 @@ const SideMenu = ({ isOpen, onClose }: Props) => {
   return (
     <aside
       className={twMerge(
-        "flex h-screen w-64 flex-col justify-between bg-gray-200 p-2",
+        "flex h-screen w-64 flex-col justify-between bg-gray-200 p-2 text-white",
       )}
     >
       <div>
@@ -49,7 +50,10 @@ const SideMenu = ({ isOpen, onClose }: Props) => {
         </div>
         <div className="mt-5">
           <Suspense>
-            <ChatList userId={session?.user.id || ""} />
+            <ChatList
+              userId={session?.user.id || ""}
+              currentChatId={currentChatId}
+            />
           </Suspense>
         </div>
       </div>
