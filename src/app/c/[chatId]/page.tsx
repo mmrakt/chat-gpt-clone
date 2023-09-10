@@ -100,6 +100,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
     }
   };
 
+  const hasMessage = () => {
+    return messages.length !== 0;
+  };
+
   return (
     <div className="relative h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
       <button
@@ -129,48 +133,61 @@ export default function Page({ params }: { params: { chatId: string } }) {
         </Transition>
         {/* TODO: mainもtransitionに追従させる */}
         <main className={twMerge("mx-auto w-screen")}>
-          <Header hasMessage={!!messages.length} />
+          <Header hasMessage={hasMessage()} />
           <div
             className={twMerge(
-              messages.length === 0 ? "mx-auto max-w-3xl px-8" : "",
+              "relative mx-auto",
+              !hasMessage()
+                ? "h-[calc(100vh-88px)] px-8"
+                : "h-[calc(100vh-61px)]",
             )}
           >
-            {messages.length === 0 && (
-              <div className="flex justify-center">
+            {!hasMessage() && (
+              <div className="mx-auto flex max-w-3xl justify-center">
                 <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-600">
                   ChatGPT
                 </h1>
               </div>
             )}
-            <ul className="pb-48 dark:bg-gray-400">
-              {messages.length !== 0 &&
-                messages.map((message) => (
+            {hasMessage() && (
+              <ul className="dark:bg-gray-400">
+                {messages.map((message) => (
                   <MessageItem message={message} key={message.id} />
                 ))}
-              {streamChatCompletionMutation.isLoading && (
-                <MessageItem
-                  message={{
-                    id: "newMessage",
-                    chatId: params.chatId,
-                    role: "assistant",
-                    content: streamChatCompletionMutation.content ?? "",
-                  }}
-                />
+                {streamChatCompletionMutation.isLoading && (
+                  <MessageItem
+                    message={{
+                      id: "newMessage",
+                      chatId: params.chatId,
+                      role: "assistant",
+                      content: streamChatCompletionMutation.content ?? "",
+                    }}
+                  />
+                )}
+              </ul>
+            )}
+            {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/1 */}
+            <div
+              className={twMerge(
+                "absolute bottom-0 z-10 w-full bg-white py-4 dark:bg-gray-400",
               )}
-            </ul>
-            <div className="bottom-6 left-8 right-8 z-10 mx-auto max-w-3xl">
-              {messages.length === 0 && <PromptHelpers />}
-              {messages.length !== 0 && (
-                <PromptingManageButton
-                  isGenerating={streamChatCompletionMutation.isLoading}
-                  onRegenerate={handleRegenerate}
-                />
-              )}
-              <div className="mt-4">
-                <PromptForm onSubmit={handleSubmit} />
-              </div>
-              <div className="mt-4 ">
-                <Help />
+            >
+              <div
+                className={twMerge("mx-auto max-w-3xl", hasMessage() ? "" : "")}
+              >
+                {!hasMessage() && <PromptHelpers />}
+                {hasMessage() && (
+                  <PromptingManageButton
+                    isGenerating={streamChatCompletionMutation.isLoading}
+                    onRegenerate={handleRegenerate}
+                  />
+                )}
+                <div className="mt-4">
+                  <PromptForm onSubmit={handleSubmit} />
+                </div>
+                <div className="mt-4 ">
+                  <Help />
+                </div>
               </div>
             </div>
           </div>
