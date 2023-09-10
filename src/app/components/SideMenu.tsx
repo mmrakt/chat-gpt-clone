@@ -24,7 +24,7 @@ const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
   return (
     <aside
       className={twMerge(
-        "relative flex h-screen w-64 flex-col justify-between bg-gray-200 p-2 text-white",
+        "relative flex min-h-screen w-64 flex-col justify-between bg-gray-200 p-2 text-white",
       )}
     >
       <div>
@@ -43,7 +43,7 @@ const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
           </Suspense>
         </div>
       </div>
-      <div className="absolute bottom-2 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
+      <div className="sticky bottom-2 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
         <button className={twMerge(listItemStyle)}>
           <SvgIcon name="avatar" className="" />
           Renew Plus

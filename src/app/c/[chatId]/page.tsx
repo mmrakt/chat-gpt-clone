@@ -25,6 +25,7 @@ import SideMenu from "../../components/SideMenu";
 import { Transition } from "@headlessui/react";
 import useUpdateChat from "../../hooks/chats/useUpdateChat";
 import { createChatTitle } from "../../utils/createChatTitle";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 export default function Page({ params }: { params: { chatId: string } }) {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -124,6 +125,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
           leave="transition duration-200"
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-64"
+          className="fixed z-10 h-full overflow-y-auto"
         >
           <SideMenu
             isOpen={isOpenSideMenu}
@@ -131,26 +133,26 @@ export default function Page({ params }: { params: { chatId: string } }) {
             currentChatId={params.chatId}
           />
         </Transition>
-        {/* TODO: mainもtransitionに追従させる */}
+        {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen")}>
           <Header hasMessage={hasMessage()} />
           <div
             className={twMerge(
-              "relative mx-auto",
+              "relative mx-auto overflow-hidden",
               !hasMessage()
-                ? "h-[calc(100vh-88px)] px-8"
-                : "h-[calc(100vh-61px)]",
+                ? "min-h-[calc(100vh-88px)] px-8"
+                : `min-h-[calc(100vh-61px)]`,
             )}
           >
             {!hasMessage() && (
-              <div className="mx-auto flex max-w-3xl justify-center">
+              <div className="mx-auto flex max-w-3xl justify-center ">
                 <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-600">
                   ChatGPT
                 </h1>
               </div>
             )}
             {hasMessage() && (
-              <ul className="dark:bg-gray-400">
+              <ul className=" dark:bg-gray-400">
                 {messages.map((message) => (
                   <MessageItem message={message} key={message.id} />
                 ))}
@@ -167,9 +169,11 @@ export default function Page({ params }: { params: { chatId: string } }) {
               </ul>
             )}
             {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/1 */}
+            {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/4 */}
             <div
+              id="promptMenu"
               className={twMerge(
-                "absolute bottom-0 z-10 w-full bg-white py-4 dark:bg-gray-400",
+                "absolute bottom-0 w-full bg-white py-4 dark:bg-gray-400",
               )}
             >
               <div
