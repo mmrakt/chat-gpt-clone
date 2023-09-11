@@ -9,7 +9,7 @@ import {
   IMessage,
   StreamChatDTO,
 } from "../../../constants";
-import React, { useContext, useState } from "react";
+import React, { useContext, useLayoutEffect, useRef, useState } from "react";
 import { useStreamChatCompletion } from "../../hooks/useStreamChatCompletion";
 import { v4 as uuidv4 } from "uuid";
 import PromptHelpers from "../../components/PromptHelpers";
@@ -38,6 +38,11 @@ export default function Page({ params }: { params: { chatId: string } }) {
   const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
     IsOpenSideMenuContext,
   );
+  const generatingMessageRef = useRef<HTMLLIElement>(null);
+
+  useLayoutEffect(() => {
+    generatingMessageRef.current?.scrollIntoView();
+  }, [streamChatCompletionMutation.content]);
 
   if (!session || !messages) return null;
 
@@ -137,14 +142,14 @@ export default function Page({ params }: { params: { chatId: string } }) {
           />
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
-        <main className={twMerge("mx-auto w-screen")}>
+        <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
           <Header hasMessage={hasMessage()} />
           <div
             className={twMerge(
-              "relative mx-auto overflow-hidden",
+              "relative mx-auto ",
               !hasMessage()
                 ? "min-h-[calc(100vh-88px)] px-8"
-                : `min-h-[calc(100vh-61px)]`,
+                : `min-h-[calc(100vh-61px)] pb-48`,
             )}
           >
             {!hasMessage() && (
@@ -157,17 +162,21 @@ export default function Page({ params }: { params: { chatId: string } }) {
             {hasMessage() && (
               <ul className=" dark:bg-gray-400">
                 {messages.map((message) => (
-                  <MessageItem message={message} key={message.id} />
+                  <li key={message.id}>
+                    <MessageItem message={message} />
+                  </li>
                 ))}
                 {streamChatCompletionMutation.isLoading && (
-                  <MessageItem
-                    message={{
-                      id: "newMessage",
-                      chatId: params.chatId,
-                      role: "assistant",
-                      content: streamChatCompletionMutation.content ?? "",
-                    }}
-                  />
+                  <li ref={generatingMessageRef}>
+                    <MessageItem
+                      message={{
+                        id: "newMessage",
+                        chatId: params.chatId,
+                        role: "assistant",
+                        content: streamChatCompletionMutation.content ?? "",
+                      }}
+                    />
+                  </li>
                 )}
               </ul>
             )}
@@ -176,7 +185,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
             <div
               id="promptMenu"
               className={twMerge(
-                "absolute bottom-0 w-full bg-white py-4 dark:bg-gray-400",
+                "fixed bottom-0 w-full  bg-gradient-to-t from-gray-900 py-4 dark:from-gray-300",
               )}
             >
               <div

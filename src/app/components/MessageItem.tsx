@@ -3,19 +3,19 @@ import React from "react";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
-import { Message } from "../../constants";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { Message } from "@prisma/client";
 
 type Props = {
-  message: Message;
+  message: Pick<Message, "id" | "role" | "content" | "chatId">;
 };
 
 const MessageItem = ({ message }: Props) => {
   const { data: session } = useSession();
 
   return (
-    <li
+    <div
       className={twMerge(
         "group p-6",
         message.role === "assistant"
@@ -70,7 +70,7 @@ const MessageItem = ({ message }: Props) => {
           )}
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 
