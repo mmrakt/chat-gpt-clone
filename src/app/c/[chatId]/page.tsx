@@ -9,7 +9,7 @@ import {
   IMessage,
   StreamChatDTO,
 } from "../../../constants";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useStreamChatCompletion } from "../../hooks/useStreamChatCompletion";
 import { v4 as uuidv4 } from "uuid";
 import PromptHelpers from "../../components/PromptHelpers";
@@ -26,6 +26,7 @@ import { Transition } from "@headlessui/react";
 import useUpdateChat from "../../hooks/chats/useUpdateChat";
 import { createChatTitle } from "../../utils/createChatTitle";
 import ScrollToBottom from "react-scroll-to-bottom";
+import { IsOpenSideMenuContext } from "../../components/providers/IsOpenSideMenuProvider";
 
 export default function Page({ params }: { params: { chatId: string } }) {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -34,7 +35,9 @@ export default function Page({ params }: { params: { chatId: string } }) {
   const updateChatMutation = useUpdateChat();
   const deleteMessageMutation = useDeleteMessage();
   const { data: messages } = useFetchMessages(params.chatId);
-  const [isOpenSideMenu, setIsOpenSideMenu] = useState(false);
+  const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
+    IsOpenSideMenuContext,
+  );
 
   if (!session || !messages) return null;
 

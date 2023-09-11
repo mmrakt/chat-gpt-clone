@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import AuthProvider from "./components/providers/AuthProvider";
 import QueryClientProvider from "./components/providers/QueryClientProvider";
+import IsOpenSideMenuProvider from "./components/providers/IsOpenSideMenuProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +31,11 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             <QueryClientProvider>
-              <Suspense fallback="">
-                <DisableSsrWrapper>{children}</DisableSsrWrapper>
-              </Suspense>
+              <IsOpenSideMenuProvider>
+                <Suspense fallback="">
+                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
+                </Suspense>
+              </IsOpenSideMenuProvider>
             </QueryClientProvider>
           </ThemeProvider>
         </AuthProvider>
