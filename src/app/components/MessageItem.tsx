@@ -47,7 +47,7 @@ const MessageItem = ({ message }: Props) => {
             </>
           )}
         </div>
-        <div className="flex w-full flex-col gap-7 lg:flex-row lg:justify-between">
+        <div className="flex w-full flex-col gap-7 lg:flex-row lg:items-start lg:justify-between">
           <MarkdownRenderer>{message.content}</MarkdownRenderer>
           {message.role === "assistant" ? (
             <p className="flex justify-end gap-3">

@@ -1,16 +1,18 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useContext } from "react";
 import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import ChatList from "./ChatList";
-import CreateChatButton from "./createChatButton";
+import { IsOpenSideMenuContext } from "./providers/IsOpenSideMenuProvider";
+import useCreateChat from "../hooks/chats/useCreateChat";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   currentChatId: string;
+  hasMessageInCurrentChat: boolean;
 };
 
 export const buttonStyle =
@@ -18,19 +20,50 @@ export const buttonStyle =
 export const listItemStyle =
   "flex w-full flex-row items-center gap-2 rounded-md py-3 pl-3 hover:bg-gray-300";
 
-const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
+const SideMenu = ({
+  isOpen,
+  onClose,
+  currentChatId,
+  hasMessageInCurrentChat,
+}: Props) => {
   const { data: session } = useSession();
+  const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
+  const createChatMutation = useCreateChat();
+
+  const handleCreateChat = async () => {
+    if (session?.user && !hasMessageInCurrentChat) {
+      await createChatMutation.mutate(session.user.id);
+    }
+  };
 
   return (
     <aside
       className={twMerge(
-        "relative flex min-h-screen w-64 flex-col justify-between bg-gray-200 p-2 text-white",
+        " flex min-h-screen w-80 flex-col justify-between bg-gray-200 p-2 text-white md:w-64",
       )}
     >
+      {/* TODO: スクロールしないと出てこない原因調査 */}
+      <button
+        className="absolute left-[100%] z-50 p-2 text-white"
+        onClick={() => {
+          setIsOpenSideMenu(false);
+        }}
+      >
+        <SvgIcon name="cross" className="" size={24} />
+      </button>
       <div>
         <div className="flex w-full gap-2">
-          <CreateChatButton userId={session?.user.id || ""} />
-          <button className={twMerge(buttonStyle)} onClick={onClose}>
+          <button
+            className={twMerge(buttonStyle, "flex-grow")}
+            onClick={handleCreateChat}
+          >
+            <SvgIcon name="plus" className="" />
+            New chat
+          </button>
+          <button
+            className={twMerge(buttonStyle, "hidden md:block")}
+            onClick={onClose}
+          >
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>
@@ -43,7 +76,7 @@ const SideMenu = ({ isOpen, onClose, currentChatId }: Props) => {
           </Suspense>
         </div>
       </div>
-      <div className="sticky bottom-2 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
+      <div className="sticky bottom-0 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
         <button className={twMerge(listItemStyle)}>
           <SvgIcon name="avatar" className="" />
           Renew Plus

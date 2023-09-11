@@ -17,6 +17,7 @@ import plus from "../../../public/plus.svg";
 import hamburger from "../../../public/hamburger.svg";
 import github from "../../../public/github.svg";
 import dots from "../../../public/dots.svg";
+import cross from "../../../public/cross.svg";
 import sideMenu from "../../../public/side-menu.svg";
 import { twMerge } from "tailwind-merge";
 
@@ -40,6 +41,7 @@ const icons = {
   hamburger,
   github,
   dots,
+  cross,
   sideMenu,
 };
 

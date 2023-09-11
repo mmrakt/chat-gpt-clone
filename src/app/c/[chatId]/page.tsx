@@ -114,7 +114,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
   };
 
   return (
-    <div className="relative h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
+    <div className=" h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
       <button
         onClick={() => setIsOpenSideMenu(true)}
         className={twMerge(
@@ -124,6 +124,12 @@ export default function Page({ params }: { params: { chatId: string } }) {
       >
         <SvgIcon name="sideMenu" className="" />
       </button>
+      <div
+        className={twMerge(
+          "absolute hidden h-screen w-screen dark:bg-[rgb(120,120,140,0.7)]",
+          isOpenSideMenu ? "z-30 block md:hidden" : "",
+        )}
+      ></div>
       <div className={twMerge("flex")}>
         <Transition
           show={isOpenSideMenu}
@@ -133,17 +139,18 @@ export default function Page({ params }: { params: { chatId: string } }) {
           leave="transition duration-200"
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-64"
-          className="fixed z-10 h-full overflow-y-auto"
+          className="fixed z-40 h-full overflow-y-auto"
         >
           <SideMenu
             isOpen={isOpenSideMenu}
             onClose={() => setIsOpenSideMenu(false)}
             currentChatId={params.chatId}
+            hasMessageInCurrentChat={hasMessage()}
           />
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
-          <Header hasMessage={hasMessage()} />
+          <Header hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(
               "relative mx-auto ",
