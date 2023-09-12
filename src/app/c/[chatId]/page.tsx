@@ -161,7 +161,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
           <CommonHeader hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(
-              "relative mx-auto ",
+              "relative mx-auto flex flex-col justify-between",
               !hasMessage()
                 ? "min-h-[calc(100vh-88px)] "
                 : `min-h-[calc(100vh-61px)] pb-48`,
@@ -204,9 +204,9 @@ export default function Page({ params }: { params: { chatId: string } }) {
               <div
                 id="promptMenu"
                 className={twMerge(
-                  "absolute bottom-0 w-full  py-4",
+                  "w-full  py-4",
                   hasMessage()
-                    ? "fixed border-t-[1px] border-gray-800 dark:border-gray-600 dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:dark:bg-transparent md:dark:from-gray-300"
+                    ? "fixed bottom-0 border-t-[1px] border-gray-800 dark:border-gray-600 dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:dark:bg-transparent md:dark:from-gray-300"
                     : "",
                 )}
               >
