@@ -200,21 +200,21 @@ export default function Page({ params }: { params: { chatId: string } }) {
             <div
               id="promptMenu"
               className={twMerge(
-                "fixed bottom-0 w-full  bg-gradient-to-t from-gray-900 py-4 dark:from-gray-300",
+                "fixed bottom-0 w-full border-t-[1px] border-gray-800 bg-white py-4 dark:border-gray-600 dark:bg-gray-400 md:bg-gradient-to-t md:from-gray-900 md:dark:from-gray-300",
               )}
             >
               <div
                 className={twMerge("mx-auto max-w-3xl", hasMessage() ? "" : "")}
               >
                 {!hasMessage() && <PromptHelpers />}
-                {hasMessage() && (
-                  <PromptingManageButton
-                    isGenerating={streamChatCompletionMutation.isLoading}
-                    onRegenerate={handleRegenerate}
-                  />
-                )}
-                <div className="mt-4">
+                <div className="mt-4 flex flex-row items-center gap-3 px-2 md:flex-col-reverse md:items-end md:px-0">
                   <PromptForm onSubmit={handleSubmit} />
+                  {hasMessage() && (
+                    <PromptingManageButton
+                      isGenerating={streamChatCompletionMutation.isLoading}
+                      onRegenerate={handleRegenerate}
+                    />
+                  )}
                 </div>
                 <div className="mt-4 ">
                   <Help />
