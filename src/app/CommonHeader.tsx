@@ -1,40 +1,13 @@
 "use client";
 import Image from "next/image";
 import { SvgIcon } from "./components/SvgIcon";
-import { Suspense, useContext } from "react";
-import { IsOpenSideMenuContext } from "./components/providers/IsOpenSideMenuProvider";
-import useCreateChat from "./hooks/chats/useCreateChat";
-import { useSession } from "next-auth/react";
 
 type Props = {
   hasMessageInCurrentChat: boolean;
 };
-const Header = ({ hasMessageInCurrentChat }: Props) => {
-  const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
-  const { data: session } = useSession();
-  const createChatMutation = useCreateChat();
-  const handleCreateChat = async () => {
-    if (session?.user && !hasMessageInCurrentChat) {
-      await createChatMutation.mutate(session.user.id);
-    }
-  };
-
+const CommonHeader = ({ hasMessageInCurrentChat }: Props) => {
   return (
     <header className="">
-      <div className="flex items-center justify-between bg-gray-400 px-4 py-2 text-gray-800 dark:border-b-[1px] dark:border-gray-600 md:hidden">
-        <button
-          className=""
-          onClick={() => {
-            setIsOpenSideMenu(true);
-          }}
-        >
-          <SvgIcon name="hamburger" className="" size={24} />
-        </button>
-        <span className="text-base">New chat</span>
-        <button className="" onClick={handleCreateChat}>
-          <SvgIcon name="plus" className="" size={24} />
-        </button>
-      </div>
       {!hasMessageInCurrentChat ? (
         <div className="flex justify-center px-2 py-5">
           <div className="flex rounded-lg bg-gray-900 p-1 dark:bg-gray-200">
@@ -69,4 +42,4 @@ const Header = ({ hasMessageInCurrentChat }: Props) => {
   );
 };
 
-export default Header;
+export default CommonHeader;

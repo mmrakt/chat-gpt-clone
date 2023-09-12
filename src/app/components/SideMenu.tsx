@@ -42,15 +42,6 @@ const SideMenu = ({
         " flex min-h-screen w-80 flex-col justify-between bg-gray-200 p-2 text-white md:w-64",
       )}
     >
-      {/* TODO: スクロールしないと出てこない原因調査 */}
-      <button
-        className="absolute left-[100%] z-50 p-2 text-white"
-        onClick={() => {
-          setIsOpenSideMenu(false);
-        }}
-      >
-        <SvgIcon name="cross" className="" size={24} />
-      </button>
       <div>
         <div className="flex w-full gap-2">
           <button
@@ -60,10 +51,7 @@ const SideMenu = ({
             <SvgIcon name="plus" className="" />
             New chat
           </button>
-          <button
-            className={twMerge(buttonStyle, "hidden md:block")}
-            onClick={onClose}
-          >
+          <button className={twMerge(buttonStyle, "")} onClick={onClose}>
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>

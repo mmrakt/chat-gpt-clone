@@ -1,5 +1,5 @@
 "use client";
-import Header from "../../Header";
+import Header from "../../CommonHeader";
 import PromptForm from "../../components/PromptForm";
 import Help from "../../components/Help";
 import {
@@ -25,8 +25,9 @@ import SideMenu from "../../components/SideMenu";
 import { Transition } from "@headlessui/react";
 import useUpdateChat from "../../hooks/chats/useUpdateChat";
 import { createChatTitle } from "../../utils/createChatTitle";
-import ScrollToBottom from "react-scroll-to-bottom";
 import { IsOpenSideMenuContext } from "../../components/providers/IsOpenSideMenuProvider";
+import SpHeader from "../../components/SpHeader";
+import CommonHeader from "../../CommonHeader";
 
 export default function Page({ params }: { params: { chatId: string } }) {
   const streamChatCompletionMutation = useStreamChatCompletion();
@@ -124,12 +125,18 @@ export default function Page({ params }: { params: { chatId: string } }) {
       >
         <SvgIcon name="sideMenu" className="" />
       </button>
-      <div
+      <Transition
+        show={isOpenSideMenu}
+        enter="transition-opacity duration-200"
+        enterFrom="opacity-0"
+        enterTo="opacity-70"
+        leave="transition-opacity duration-200"
+        leaveFrom="opacity-70"
+        leaveTo="opacity-0"
         className={twMerge(
-          "absolute hidden h-screen w-screen dark:bg-[rgb(120,120,140,0.7)]",
-          isOpenSideMenu ? "z-30 block md:hidden" : "",
+          "absolute z-30 h-screen w-screen dark:bg-[rgb(120,120,140)] md:hidden",
         )}
-      ></div>
+      ></Transition>
       <div className={twMerge("flex")}>
         <Transition
           show={isOpenSideMenu}
@@ -150,7 +157,8 @@ export default function Page({ params }: { params: { chatId: string } }) {
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
-          <Header hasMessageInCurrentChat={hasMessage()} />
+          <SpHeader hasMessageInCurrentChat={hasMessage()} />
+          <CommonHeader hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(
               "relative mx-auto ",
