@@ -75,6 +75,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
         streamChatCompletionMutation.setContent(undefined);
       },
       onError: (errorCode) => {
+        console.log(errorCode);
         // const message =
         //   errorCode === "context_length_exceeded"
         //     : "エラーが発生しました";
@@ -210,7 +211,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
                 )}
               >
                 <div className="mx-auto flex max-w-3xl flex-row items-center gap-3 px-2 md:mt-4 md:flex-col-reverse md:items-end md:px-0">
-                  <PromptForm onSubmit={handleSubmit} />
+                  <PromptForm
+                    onSubmit={handleSubmit}
+                    isGenerating={streamChatCompletionMutation.isLoading}
+                  />
                   {hasMessage() && (
                     <PromptingManageButton
                       isGenerating={streamChatCompletionMutation.isLoading}

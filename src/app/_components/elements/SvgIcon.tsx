@@ -14,6 +14,7 @@ import hamburger from "../../../../public/hamburger.svg";
 import keyboardShortcuts from "../../../../public/keyboard-shortcuts.svg";
 import lock from "../../../../public/lock.svg";
 import plus from "../../../../public/plus.svg";
+import remove from "../../../../public/remove.svg";
 import sendMessage from "../../../../public/send-message.svg";
 import sideMenu from "../../../../public/side-menu.svg";
 import square from "../../../../public/square.svg";
@@ -43,6 +44,7 @@ const icons = {
   dots,
   cross,
   sideMenu,
+  remove,
 };
 
 type Name = keyof typeof icons;

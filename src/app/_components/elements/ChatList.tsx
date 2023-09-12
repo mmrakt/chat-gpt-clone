@@ -1,10 +1,9 @@
-import Link from "next/link";
 import React from "react";
-import { twMerge } from "tailwind-merge";
+import Link from "next/link";
 import { SvgIcon } from "./SvgIcon";
-import { Chat } from "@prisma/client";
-import { listItemStyle } from "./SideMenu";
 import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { Chat } from "@prisma/client";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   userId: string;
@@ -14,6 +13,10 @@ type Props = {
 const ChatList = ({ userId, currentChatId }: Props) => {
   const { data: chatList } = useFetchChats(userId);
 
+  const isCurrentChat = (chatId: string) => {
+    return currentChatId === chatId;
+  };
+  const handleRemoveChat = () => {};
   return (
     <ul className="flex flex-col">
       {chatList?.map((chat) => (
@@ -21,12 +24,26 @@ const ChatList = ({ userId, currentChatId }: Props) => {
           <Link
             href={chat.id}
             className={twMerge(
-              listItemStyle,
-              currentChatId === chat.id && "bg-gray-400 hover:bg-gray-400",
+              "side-menu-list-item overflow-ellipsis overflow-hidden whitespace-nowrap",
+              isCurrentChat(chat.id) && "bg-gray-400 hovser:bg-gray-400",
             )}
           >
             <SvgIcon name="chat" className="" />
-            {chat.title}
+            <div className="w-full relative flex items-center break-all overflow-hidden">
+              {chat.title}
+              <span
+                className={twMerge(
+                  "absolute h-full right-0 w-8 z-10 bg-gradient-to-l from-gray-200",
+                  isCurrentChat(chat.id) ? "from-gray-400" : "",
+                )}
+              ></span>
+            </div>
+
+            {isCurrentChat(chat.id) && (
+              <button className="pr-2" onClick={handleRemoveChat}>
+                <SvgIcon name="remove" className="" />
+              </button>
+            )}
           </Link>
         </li>
       ))}

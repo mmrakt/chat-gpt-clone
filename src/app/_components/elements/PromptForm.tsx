@@ -7,9 +7,10 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   onSubmit: (content: string) => void;
+  isGenerating: boolean;
 };
 
-const PromptForm = ({ onSubmit }: Props) => {
+const PromptForm = ({ onSubmit, isGenerating }: Props) => {
   const [content, setContent] = useState("");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, content);
@@ -36,21 +37,25 @@ const PromptForm = ({ onSubmit }: Props) => {
         id="prompt"
         rows={1}
       ></textarea>
-      <button
-        onClick={handleSubmit}
-        className={twMerge(
-          "self-end rounded-lg p-2 transition-colors duration-200",
-          content !== "" ? "bg-green-500" : "",
-        )}
-      >
-        <SvgIcon
-          name="sendMessage"
+      {isGenerating ? (
+        <span className="animate-spin h-4 w-4 border-2 dark:border-gray-800 border-gray-400 rounded-full border-t-transparent"></span>
+      ) : (
+        <button
+          onClick={handleSubmit}
           className={twMerge(
-            !!content ? "text-white" : "text-gray-800 dark:text-gray-700",
+            "self-end rounded-lg p-2 transition-colors duration-200",
+            content !== "" ? "bg-green-500" : "",
           )}
-          fillColor={!!content ? "#fff" : ""}
-        />
-      </button>
+        >
+          <SvgIcon
+            name="sendMessage"
+            className={twMerge(
+              !!content ? "text-white" : "text-gray-800 dark:text-gray-700",
+            )}
+            fillColor={!!content ? "#fff" : ""}
+          />
+        </button>
+      )}
     </div>
   );
 };

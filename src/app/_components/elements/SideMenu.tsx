@@ -16,11 +16,6 @@ type Props = {
   hasMessageInCurrentChat: boolean;
 };
 
-export const buttonStyle =
-  "flex items-center gap-3 rounded-md border-[1px] border-gray-600 px-4 py-3 hover:bg-gray-300";
-export const listItemStyle =
-  "flex w-full flex-row items-center gap-2 rounded-md py-3 pl-3 hover:bg-gray-300";
-
 const SideMenu = ({
   isOpen,
   onClose,
@@ -46,13 +41,13 @@ const SideMenu = ({
       <div>
         <div className="flex w-full gap-2">
           <button
-            className={twMerge(buttonStyle, "flex-grow")}
+            className={twMerge("flex-grow side-menu-button")}
             onClick={handleCreateChat}
           >
             <SvgIcon name="plus" className="" />
             New chat
           </button>
-          <button className={twMerge(buttonStyle, "")} onClick={onClose}>
+          <button className={twMerge("side-menu-button")} onClick={onClose}>
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>
@@ -66,11 +61,11 @@ const SideMenu = ({
         </div>
       </div>
       <div className="sticky bottom-0 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
-        <button className={twMerge(listItemStyle)}>
+        <button className={twMerge("side-menu-list-item")}>
           <SvgIcon name="avatar" className="" />
           Renew Plus
         </button>
-        <button className={twMerge(listItemStyle, "justify-between px-3")}>
+        <button className={twMerge("side-menu-list-item justify-between px-3")}>
           <span className="flex items-center gap-2">
             <Image
               src={session?.user?.image || ""}
