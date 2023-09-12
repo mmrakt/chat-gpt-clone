@@ -27,7 +27,7 @@ const PromptForm = ({ onSubmit }: Props) => {
     }
   };
   return (
-    <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white p-4 shadow-sm dark:bg-gray-500">
+    <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white px-3 py-[10px] shadow-sm dark:bg-gray-500 md:p-4">
       <textarea
         className="max-h-50 h-6 w-full resize-none overflow-y-auto bg-inherit align-middle placeholder-gray-700 focus:outline-none focus-visible:outline-none"
         placeholder="Send a message"

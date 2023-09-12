@@ -23,7 +23,7 @@ const Help = () => {
   ];
   const modalItemStyle = "w-full flex items-center gap-2 p-4";
   return (
-    <p className="flex items-center justify-center text-xs text-gray-400 dark:text-gray-800">
+    <p className="px-2 text-xs text-gray-400 dark:text-gray-800 md:flex md:items-center md:justify-center md:px-0">
       Free Research Preview. ChatGPT may produce inaccurate information about
       people, places, or facts.
       <a

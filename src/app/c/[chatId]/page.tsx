@@ -163,7 +163,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
             className={twMerge(
               "relative mx-auto ",
               !hasMessage()
-                ? "min-h-[calc(100vh-88px)] px-8"
+                ? "min-h-[calc(100vh-88px)] "
                 : `min-h-[calc(100vh-61px)] pb-48`,
             )}
           >
@@ -197,17 +197,20 @@ export default function Page({ params }: { params: { chatId: string } }) {
             )}
             {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/1 */}
             {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/4 */}
-            <div
-              id="promptMenu"
-              className={twMerge(
-                "fixed bottom-0 w-full border-t-[1px] border-gray-800 bg-white py-4 dark:border-gray-600 dark:bg-gray-400 md:bg-gradient-to-t md:from-gray-900 md:dark:from-gray-300",
-              )}
-            >
-              <div
-                className={twMerge("mx-auto max-w-3xl", hasMessage() ? "" : "")}
-              >
+            <div className="w-full">
+              <div className="mx-auto max-w-3xl">
                 {!hasMessage() && <PromptHelpers />}
-                <div className="mt-4 flex flex-row items-center gap-3 px-2 md:flex-col-reverse md:items-end md:px-0">
+              </div>
+              <div
+                id="promptMenu"
+                className={twMerge(
+                  "absolute bottom-0 w-full  py-4",
+                  hasMessage()
+                    ? "fixed border-t-[1px] border-gray-800 dark:border-gray-600 dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:dark:bg-transparent md:dark:from-gray-300"
+                    : "",
+                )}
+              >
+                <div className="mx-auto flex max-w-3xl flex-row items-center gap-3 px-2 md:mt-4 md:flex-col-reverse md:items-end md:px-0">
                   <PromptForm onSubmit={handleSubmit} />
                   {hasMessage() && (
                     <PromptingManageButton
