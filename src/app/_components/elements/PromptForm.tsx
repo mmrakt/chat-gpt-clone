@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import useAutosizeTextArea from "../hooks/useAutosizeTextArea";
-import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
+import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   onSubmit: (content: string) => void;

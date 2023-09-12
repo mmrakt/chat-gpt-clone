@@ -1,6 +1,7 @@
 "use client";
+
+import { SvgIcon } from "@app/_components/elements/SvgIcon";
 import { signIn, useSession } from "next-auth/react";
-import { SvgIcon } from "../components/SvgIcon";
 
 const Page = () => {
   return (

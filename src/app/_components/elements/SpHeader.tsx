@@ -1,8 +1,8 @@
-import { useSession } from "next-auth/react";
 import { useContext } from "react";
-import useCreateChat from "../hooks/chats/useCreateChat";
 import { SvgIcon } from "./SvgIcon";
-import { IsOpenSideMenuContext } from "./providers/IsOpenSideMenuProvider";
+import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
+import useCreateChat from "@app/_hooks/chats/useCreateChat";
+import { useSession } from "next-auth/react";
 
 type Props = {
   hasMessageInCurrentChat: boolean;

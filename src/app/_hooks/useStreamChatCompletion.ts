@@ -1,10 +1,10 @@
-import { StreamChatDTO } from "../../constants";
+import { useState } from "react";
+import { StreamChatDTO } from "@app/_config";
 import {
   CompletionError,
   ErrorCode,
   streamChatCompletion,
-} from "../utils/streamChatCompletion";
-import { useState } from "react";
+} from "@app/_utils/streamChatCompletion";
 
 type StartOptions = {
   params: StreamChatDTO["params"];

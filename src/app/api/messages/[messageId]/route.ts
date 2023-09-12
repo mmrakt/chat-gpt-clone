@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../libs/prisma";
+import { prisma } from "@app/_libs/prisma";
 
 export const DELETE = async (
   req: Request,

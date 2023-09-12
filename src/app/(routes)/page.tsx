@@ -1,7 +1,7 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import fetchChats from "./utils/fetchChat";
+import fetchChats from "@app/_utils/fetchChat";
+import { authOptions } from "@app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export default async function Page({ params }: { params: { chatId: string } }) {
   const session = await getServerSession(authOptions);

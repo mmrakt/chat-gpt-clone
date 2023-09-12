@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { SvgIcon } from "./SvgIcon";
 import { Chat } from "@prisma/client";
 import { listItemStyle } from "./SideMenu";
-import { useFetchChats } from "../hooks/chats/useFetchChats";
+import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
 
 type Props = {
   userId: string;

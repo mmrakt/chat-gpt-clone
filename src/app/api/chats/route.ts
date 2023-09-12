@@ -1,6 +1,6 @@
-import { Chat } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { prisma } from "../../../libs/prisma";
+import { prisma } from "@app/_libs/prisma";
+import { Chat } from "@prisma/client";
 
 export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);

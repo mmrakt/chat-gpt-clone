@@ -1,12 +1,13 @@
 "use client";
+
 import React, { Suspense, useContext } from "react";
-import { twMerge } from "tailwind-merge";
-import { SvgIcon } from "./SvgIcon";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import ChatList from "./ChatList";
-import { IsOpenSideMenuContext } from "./providers/IsOpenSideMenuProvider";
-import useCreateChat from "../hooks/chats/useCreateChat";
+import { SvgIcon } from "./SvgIcon";
+import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
+import useCreateChat from "@app/_hooks/chats/useCreateChat";
+import { useSession } from "next-auth/react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   isOpen: boolean;

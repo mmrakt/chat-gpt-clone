@@ -1,6 +1,7 @@
 "use client";
+
 import Image from "next/image";
-import { SvgIcon } from "./components/SvgIcon";
+import { SvgIcon } from "@app/_components/elements/SvgIcon";
 
 type Props = {
   hasMessageInCurrentChat: boolean;

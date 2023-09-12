@@ -1,6 +1,7 @@
 "use client";
-import { createContext, ReactElement } from "react";
-import { useMatchMedia } from "../../hooks/useMatchMedia";
+
+import { ReactElement, createContext } from "react";
+import { useMatchMedia } from "@app/_hooks/useMatchMedia";
 
 type Theme = "light" | "dark";
 type IThemeContext = {

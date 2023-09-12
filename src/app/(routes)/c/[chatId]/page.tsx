@@ -1,33 +1,32 @@
 "use client";
-import Header from "../../CommonHeader";
-import PromptForm from "../../components/PromptForm";
-import Help from "../../components/Help";
+
+import { useContext, useLayoutEffect, useRef } from "react";
+import CommonHeader from "@app/_components/elements/CommonHeader";
+import Help from "@app/_components/elements/Help";
+import MessageItem from "@app/_components/elements/MessageItem";
+import PromptForm from "@app/_components/elements/PromptForm";
+import PromptHelpers from "@app/_components/elements/PromptHelpers";
+import PromptingManageButton from "@app/_components/elements/PromptingManageButton";
+import SideMenu from "@app/_components/elements/SideMenu";
+import SpHeader from "@app/_components/elements/SpHeader";
+import { SvgIcon } from "@app/_components/elements/SvgIcon";
+import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import {
   ASSIGNABLE_MODEL,
-  CHAT_TITLE_PREFIX,
   CreateMessageRole,
   IMessage,
   StreamChatDTO,
-} from "../../../constants";
-import React, { useContext, useLayoutEffect, useRef, useState } from "react";
-import { useStreamChatCompletion } from "../../hooks/useStreamChatCompletion";
-import { v4 as uuidv4 } from "uuid";
-import PromptHelpers from "../../components/PromptHelpers";
-import { twMerge } from "tailwind-merge";
-import MessageItem from "../../components/MessageItem";
-import PromptingManageButton from "../../components/PromptingManageButton";
-import { useSession } from "next-auth/react";
-import useCreateMessage from "../../hooks/messages/useCreateMessage";
-import { useFetchMessages } from "../../hooks/messages/useFetchMessages";
-import useDeleteMessage from "../../hooks/messages/useDeleteMessage";
-import { SvgIcon } from "../../components/SvgIcon";
-import SideMenu from "../../components/SideMenu";
+} from "@app/_config";
+import useUpdateChat from "@app/_hooks/chats/useUpdateChat";
+import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
+import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
+import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
+import { useStreamChatCompletion } from "@app/_hooks/useStreamChatCompletion";
+import { createChatTitle } from "@app/_utils/createChatTitle";
 import { Transition } from "@headlessui/react";
-import useUpdateChat from "../../hooks/chats/useUpdateChat";
-import { createChatTitle } from "../../utils/createChatTitle";
-import { IsOpenSideMenuContext } from "../../components/providers/IsOpenSideMenuProvider";
-import SpHeader from "../../components/SpHeader";
-import CommonHeader from "../../CommonHeader";
+import { useSession } from "next-auth/react";
+import { twMerge } from "tailwind-merge";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Page({ params }: { params: { chatId: string } }) {
   const streamChatCompletionMutation = useStreamChatCompletion();

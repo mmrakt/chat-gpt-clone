@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { Chat, prisma } from "../../../../libs/prisma";
+import { prisma } from "@app/_libs/prisma";
+import { Chat } from "@prisma/client";
 
 export const GET = async (
   req: Request,

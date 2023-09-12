@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./global.css";
-import ThemeProvider from "./components/providers/ThemeProvider";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import AuthProvider from "./components/providers/AuthProvider";
-import QueryClientProvider from "./components/providers/QueryClientProvider";
-import IsOpenSideMenuProvider from "./components/providers/IsOpenSideMenuProvider";
+import { Inter } from "next/font/google";
+import AuthProvider from "@app/_components/providers/AuthProvider";
+import IsOpenSideMenuProvider from "@app/_components/providers/IsOpenSideMenuProvider";
+import QueryClientProvider from "@app/_components/providers/QueryClientProvider";
+import ThemeProvider from "@app/_components/providers/ThemeProvider";
+import "@app/_styles/global.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const DisableSsrWrapper = dynamic(
-  () => import("./components/DisableSsrWrapper"),
+  () => import("@app/_components/elements/DisableSsrWrapper"),
   { ssr: false },
 );
 

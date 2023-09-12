@@ -1,11 +1,12 @@
 "use client";
+
 import React from "react";
-import { MarkdownRenderer } from "./MarkdownRenderer";
-import { twMerge } from "tailwind-merge";
-import { SvgIcon } from "./SvgIcon";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { MarkdownRenderer } from "./MarkdownRenderer";
+import { SvgIcon } from "./SvgIcon";
 import { Message } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: Pick<Message, "id" | "role" | "content" | "chatId">;
