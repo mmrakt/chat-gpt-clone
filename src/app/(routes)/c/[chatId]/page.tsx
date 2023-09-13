@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useLayoutEffect, useRef } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
 import Help from "@app/_components/elements/Help";
@@ -25,6 +25,7 @@ import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
 import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
 import { useStreamChatCompletion } from "@app/_hooks/useStreamChatCompletion";
 import { createChatTitle } from "@app/_utils/createChatTitle";
+import { isWithinLimitTokenCount } from "@app/_utils/tokenizer";
 import { Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
@@ -44,6 +45,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
   const { isOpenDialogOfRemoveChat } = useContext(
     IsOpenDialogOfRemoveChatContext,
   );
+  const [errorMsg, setErrorMsg] = useState("");
 
   useLayoutEffect(() => {
     generatingMessageRef.current?.scrollIntoView();
@@ -52,6 +54,11 @@ export default function Page({ params }: { params: { chatId: string } }) {
   if (!session || !messages) return null;
 
   const handleSubmit = async (content: string) => {
+    if (!isWithinLimitTokenCount(content)) {
+      setErrorMsg("入力トークン数が1000を超えています");
+      return;
+    }
+
     registerMessage("user", content);
     updateChatMutation.mutate({
       id: params.chatId,
@@ -73,6 +80,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
   };
 
   const startCompletion = async (params: StreamChatDTO["params"]) => {
+    if (errorMsg) {
+      setErrorMsg("");
+    }
+
     await streamChatCompletionMutation.start({
       params,
       onSuccess: async (answer) => {
@@ -214,6 +225,19 @@ export default function Page({ params }: { params: { chatId: string } }) {
                         role: "assistant",
                         content: streamChatCompletionMutation.content ?? "",
                       }}
+                    />
+                  </li>
+                )}
+                {errorMsg && (
+                  <li>
+                    <MessageItem
+                      message={{
+                        id: "errorMessage",
+                        chatId: params.chatId,
+                        role: "assistant",
+                        content: errorMsg,
+                      }}
+                      isError
                     />
                   </li>
                 )}

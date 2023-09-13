@@ -1,9 +1,9 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { twMerge } from "tailwind-merge";
-import { Menu, Transition } from "@headlessui/react";
 import { SvgIcon } from "./SvgIcon";
+import { Menu, Transition } from "@headlessui/react";
+import { twMerge } from "tailwind-merge";
 
 const Help = () => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -24,15 +24,7 @@ const Help = () => {
   const modalItemStyle = "w-full flex items-center gap-2 p-4";
   return (
     <p className="px-2 text-xs text-gray-400 dark:text-gray-800 md:flex md:items-center md:justify-center md:px-0">
-      Free Research Preview. ChatGPT may produce inaccurate information about
-      people, places, or facts.
-      <a
-        href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
-        className="ml-1 underline"
-        target="_blank"
-      >
-        ChatGPT August 3 Version
-      </a>
+      ※入力トークンの最大数は1000までです。
       <Menu>
         <Menu.Button
           onClick={() => {

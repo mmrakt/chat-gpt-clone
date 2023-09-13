@@ -1,23 +1,24 @@
-import remarkGfm from "remark-gfm";
 import { CodeBlock } from "./CodeBlock";
 import ReactMarkdown from "react-markdown";
+import { isError } from "react-query";
+import remarkGfm from "remark-gfm";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   children: string;
+  isError?: boolean;
 };
 
-export const MarkdownRenderer = ({ children }: Props) => {
+export const MarkdownRenderer = ({ children, isError }: Props) => {
   return (
-    <div className="">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code: CodeBlock,
-        }}
-        className="markdown"
-      >
-        {children}
-      </ReactMarkdown>
-    </div>
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        code: CodeBlock,
+      }}
+      className={twMerge("markdown", isError && "error")}
+    >
+      {children}
+    </ReactMarkdown>
   );
 };

@@ -119,6 +119,10 @@ a {
   @apply break-words font-normal leading-7 dark:text-gray-800;
 }
 
+.markdown.error {
+  @apply text-red-500;
+}
+
 .markdown > * + * {
   @apply mb-4 mt-0;
 }

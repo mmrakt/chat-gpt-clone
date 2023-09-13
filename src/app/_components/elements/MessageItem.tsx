@@ -10,9 +10,10 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: Pick<Message, "id" | "role" | "content" | "chatId">;
+  isError?: boolean;
 };
 
-const MessageItem = ({ message }: Props) => {
+const MessageItem = ({ message, isError }: Props) => {
   const { data: session } = useSession();
 
   return (
@@ -32,7 +33,14 @@ const MessageItem = ({ message }: Props) => {
           )}
         >
           {message.role === "assistant" ? (
-            <SvgIcon name="chatGpt" size={24} className="text-white" />
+            <span className="relative">
+              <SvgIcon name="chatGpt" size={24} className="text-white" />
+              {isError && (
+                <span className="absolute top-5 text-white left-5 border-[1px] border-white bg-red-500 rounded-full w-4 h-4 flex justify-center items-center">
+                  !
+                </span>
+              )}
+            </span>
           ) : (
             <>
               {session?.user?.image ? (
@@ -49,7 +57,9 @@ const MessageItem = ({ message }: Props) => {
           )}
         </div>
         <div className="flex w-full flex-col gap-7 lg:flex-row lg:items-start lg:justify-between">
-          <MarkdownRenderer>{message.content}</MarkdownRenderer>
+          <MarkdownRenderer isError={isError}>
+            {message.content}
+          </MarkdownRenderer>
           {message.role === "assistant" ? (
             <p className="flex justify-end gap-3">
               <button className="">
