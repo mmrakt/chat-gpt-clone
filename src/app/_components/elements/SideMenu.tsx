@@ -4,13 +4,16 @@ import React, { Suspense, useContext } from "react";
 import Image from "next/image";
 import ChatList from "./ChatList";
 import { SvgIcon } from "./SvgIcon";
+import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
-import { useSession } from "next-auth/react";
+import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { User } from "next-auth";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
   isOpen: boolean;
+  user: User;
   onClose: () => void;
   currentChatId: string;
   hasMessageInCurrentChat: boolean;
@@ -18,17 +21,18 @@ type Props = {
 
 const SideMenu = ({
   isOpen,
+  user,
   onClose,
   currentChatId,
   hasMessageInCurrentChat,
 }: Props) => {
-  const { data: session } = useSession();
+  const { data: chats } = useFetchChats(user.id);
   const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
   const createChatMutation = useCreateChat();
 
   const handleCreateChat = async () => {
-    if (session?.user && !hasMessageInCurrentChat) {
-      await createChatMutation.mutate(session.user.id);
+    if (hasMessageInCurrentChat && chats && chats.length <= 5) {
+      await createChatMutation.mutate(user.id);
     }
   };
 
@@ -51,12 +55,18 @@ const SideMenu = ({
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>
-        <div className="mt-5">
-          <Suspense>
-            <ChatList
-              userId={session?.user.id || ""}
-              currentChatId={currentChatId}
-            />
+        <div className="mt-3">
+          <p className="pl-3 mb-3 text-xs font-md text-gray-800">
+            ※チャットの作成数は5つまでです
+          </p>
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center">
+                <LoadingSpinner className=" border-gray-800 border-t-gray-200" />
+              </div>
+            }
+          >
+            <ChatList userId={user.id || ""} currentChatId={currentChatId} />
           </Suspense>
         </div>
       </div>
@@ -68,13 +78,13 @@ const SideMenu = ({
         <button className={twMerge("side-menu-list-item justify-between px-3")}>
           <span className="flex items-center gap-2">
             <Image
-              src={session?.user?.image || ""}
+              src={user?.image || ""}
               alt=""
               width={36}
               height={36}
               className=""
             />
-            {session?.user?.name}
+            {user?.name}
           </span>
           <span className="mr-2">
             <SvgIcon name="dots" className="" />

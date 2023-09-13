@@ -154,7 +154,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
         leaveFrom="opacity-70"
         leaveTo="opacity-0"
         className={twMerge(
-          "absolute z-30 h-screen w-screen dark:bg-[rgb(120,120,140)] md:hidden",
+          "absolute z-30 h-screen w-screen bg-gray-700 dark:bg-[rgb(120,120,140)] md:hidden",
         )}
       ></Transition>
       <div className={twMerge("flex")}>
@@ -170,6 +170,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
         >
           <SideMenu
             isOpen={isOpenSideMenu}
+            user={session.user}
             onClose={() => setIsOpenSideMenu(false)}
             currentChatId={params.chatId}
             hasMessageInCurrentChat={hasMessage()}
@@ -177,7 +178,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
-          <SpHeader hasMessageInCurrentChat={hasMessage()} />
+          <SpHeader
+            hasMessageInCurrentChat={hasMessage()}
+            user={session.user}
+          />
           <CommonHeader hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(
@@ -226,7 +230,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
                 className={twMerge(
                   "w-full  py-4",
                   hasMessage()
-                    ? "fixed bottom-0 border-t-[1px] border-gray-800 dark:border-gray-600 dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:dark:bg-transparent md:dark:from-gray-300"
+                    ? "fixed bottom-0 border-t-[1px] border-gray-900 dark:border-gray-600 bg-white dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:bg-transparent md:dark:bg-transparent md:dark:from-gray-300"
                     : "",
                 )}
               >

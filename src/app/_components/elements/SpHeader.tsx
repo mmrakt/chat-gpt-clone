@@ -2,19 +2,21 @@ import { useContext } from "react";
 import { SvgIcon } from "./SvgIcon";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
-import { useSession } from "next-auth/react";
+import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { User } from "next-auth";
 
 type Props = {
   hasMessageInCurrentChat: boolean;
+  user: User;
 };
 
-const SpHeader = ({ hasMessageInCurrentChat }: Props) => {
+const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
   const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
-  const { data: session } = useSession();
+  const { data: chats } = useFetchChats(user.id);
   const createChatMutation = useCreateChat();
   const handleCreateChat = async () => {
-    if (session?.user && !hasMessageInCurrentChat) {
-      await createChatMutation.mutate(session.user.id);
+    if (hasMessageInCurrentChat && chats && chats.length <= 5) {
+      await createChatMutation.mutate(user.id);
     }
   };
   return (

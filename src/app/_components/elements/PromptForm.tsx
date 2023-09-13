@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { SvgIcon } from "./SvgIcon";
+import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
 import { twMerge } from "tailwind-merge";
 
@@ -38,7 +39,7 @@ const PromptForm = ({ onSubmit, isGenerating }: Props) => {
         rows={1}
       ></textarea>
       {isGenerating ? (
-        <span className="animate-spin h-4 w-4 border-2 dark:border-gray-800 border-gray-400 rounded-full border-t-transparent"></span>
+        <LoadingSpinner className="" />
       ) : (
         <button
           onClick={handleSubmit}

@@ -1,5 +1,5 @@
-import { useQuery, UseQueryResult } from "react-query";
 import { Chat } from "@prisma/client";
+import { UseQueryResult, useQuery } from "react-query";
 
 const useFetchChats = (userId: string): UseQueryResult<Chat[]> => {
   return useQuery<Chat[]>({
