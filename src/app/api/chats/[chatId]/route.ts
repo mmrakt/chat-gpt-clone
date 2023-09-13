@@ -47,3 +47,22 @@ export const PATCH = async (
   }
   return NextResponse.json(chat, { status: 200 });
 };
+
+export const DELETE = async (
+  req: Request,
+  { params }: { params: { chatId: string } },
+) => {
+  try {
+    await prisma.chat.delete({
+      where: {
+        id: params.chatId,
+      },
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+  return NextResponse.json({ status: 200 });
+};

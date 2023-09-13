@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import AuthProvider from "@app/_components/providers/AuthProvider";
+import IsOpenDialogOfRemoveChatProvider from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import IsOpenSideMenuProvider from "@app/_components/providers/IsOpenSideMenuProvider";
 import QueryClientProvider from "@app/_components/providers/QueryClientProvider";
 import ThemeProvider from "@app/_components/providers/ThemeProvider";
@@ -32,9 +33,11 @@ export default function RootLayout({
           <ThemeProvider>
             <QueryClientProvider>
               <IsOpenSideMenuProvider>
-                <Suspense fallback="">
-                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
-                </Suspense>
+                <IsOpenDialogOfRemoveChatProvider>
+                  <Suspense fallback="">
+                    <DisableSsrWrapper>{children}</DisableSsrWrapper>
+                  </Suspense>
+                </IsOpenDialogOfRemoveChatProvider>
               </IsOpenSideMenuProvider>
             </QueryClientProvider>
           </ThemeProvider>

@@ -2,6 +2,7 @@
 
 import { useContext, useLayoutEffect, useRef } from "react";
 import CommonHeader from "@app/_components/elements/CommonHeader";
+import Dialog from "@app/_components/elements/Dialog";
 import Help from "@app/_components/elements/Help";
 import MessageItem from "@app/_components/elements/MessageItem";
 import PromptForm from "@app/_components/elements/PromptForm";
@@ -10,6 +11,7 @@ import PromptingManageButton from "@app/_components/elements/PromptingManageButt
 import SideMenu from "@app/_components/elements/SideMenu";
 import SpHeader from "@app/_components/elements/SpHeader";
 import { SvgIcon } from "@app/_components/elements/SvgIcon";
+import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import {
   ASSIGNABLE_MODEL,
@@ -39,6 +41,9 @@ export default function Page({ params }: { params: { chatId: string } }) {
     IsOpenSideMenuContext,
   );
   const generatingMessageRef = useRef<HTMLLIElement>(null);
+  const { isOpenDialogOfRemoveChat } = useContext(
+    IsOpenDialogOfRemoveChatContext,
+  );
 
   useLayoutEffect(() => {
     generatingMessageRef.current?.scrollIntoView();
@@ -115,7 +120,22 @@ export default function Page({ params }: { params: { chatId: string } }) {
   };
 
   return (
-    <div className=" h-screen bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
+    <div className="h-full bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
+      {isOpenDialogOfRemoveChat && (
+        <>
+          <div
+            className={twMerge(
+              "absolute hidden inset-0 w-screen h-full bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70 z-50",
+              isOpenDialogOfRemoveChat ? "block" : "",
+            )}
+          ></div>
+          <Dialog
+            isOpen={isOpenDialogOfRemoveChat}
+            currentChatId={params.chatId}
+          />
+        </>
+      )}
+
       <button
         onClick={() => setIsOpenSideMenu(true)}
         className={twMerge(

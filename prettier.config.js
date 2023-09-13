@@ -19,7 +19,7 @@ module.exports = {
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
   plugins: [
-    "prettier-plugin-tailwindcss",
     "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
   ],
 };
