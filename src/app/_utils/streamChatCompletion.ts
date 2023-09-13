@@ -1,4 +1,4 @@
-import { StreamChatDTO } from "../../constants";
+import { StreamChatDTO } from "@app/_config";
 
 export async function* streamChatCompletion({ params }: StreamChatDTO) {
   const completion = await fetch(

@@ -1,5 +1,5 @@
-import { useMutation, UseMutationResult, useQueryClient } from "react-query";
-import { IMessage } from "../../../constants";
+import { IMessage } from "@app/_config";
+import { UseMutationResult, useMutation, useQueryClient } from "react-query";
 
 const useCreateMessage = () => {
   const queryClient = useQueryClient();
