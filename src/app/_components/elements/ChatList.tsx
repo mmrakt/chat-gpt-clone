@@ -29,8 +29,8 @@ const ChatList = ({ userId, currentChatId }: Props) => {
           <Link
             href={chat.id}
             className={twMerge(
-              "side-menu-list-item overflow-ellipsis overflow-hidden whitespace-nowrap",
-              isCurrentChat(chat.id) && "bg-gray-400 hovser:bg-gray-400",
+              "side-menu-list-item group overflow-ellipsis overflow-hidden whitespace-nowrap",
+              isCurrentChat(chat.id) && "bg-gray-400 hover:bg-gray-400",
             )}
           >
             <SvgIcon name="chat" className="" />
@@ -38,8 +38,10 @@ const ChatList = ({ userId, currentChatId }: Props) => {
               {chat.title}
               <span
                 className={twMerge(
-                  "absolute h-full right-0 w-8 z-10 bg-gradient-to-l from-gray-200",
-                  isCurrentChat(chat.id) ? "from-gray-400" : "",
+                  "absolute h-full right-0 w-8 z-10 bg-gradient-to-l from-gray-200 group-hover:from-gray-300 to-[rgba(32,33,35,0)]",
+                  isCurrentChat(chat.id)
+                    ? "from-gray-400 group-hover:from-gray-400"
+                    : "",
                 )}
               ></span>
             </div>
