@@ -1,11 +1,19 @@
 "use client";
 
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
 import Help from "@app/_components/elements/Help";
+import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import MessageItem from "@app/_components/elements/MessageItem";
-import PromptForm from "@app/_components/elements/PromptForm";
+// import PromptForm from "@app/_components/elements/PromptForm";
 import PromptHelpers from "@app/_components/elements/PromptHelpers";
 import PromptingManageButton from "@app/_components/elements/PromptingManageButton";
 import SideMenu from "@app/_components/elements/SideMenu";
@@ -17,27 +25,41 @@ import {
   ASSIGNABLE_MODEL,
   CreateMessageRole,
   IMessage,
+  Role,
   StreamChatDTO,
 } from "@app/_config";
 import useUpdateChat from "@app/_hooks/chats/useUpdateChat";
 import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
 import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
+import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
 import { useStreamChatCompletion } from "@app/_hooks/useStreamChatCompletion";
 import { createChatTitle } from "@app/_utils/createChatTitle";
 import { isWithinLimitTokenCount } from "@app/_utils/tokenizer";
 import { Transition } from "@headlessui/react";
+import { Message } from "@prisma/client";
+import { useChat } from "ai/react";
 import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Page({ params }: { params: { chatId: string } }) {
-  const streamChatCompletionMutation = useStreamChatCompletion();
+  // const streamChatCompletionMutation = useStreamChatCompletion();
+  const { data: dbMessages } = useFetchMessages(params.chatId);
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/completion",
+      initialMessages: dbMessages?.map((message) =>
+        convertMessageFromDbToOpenai(message),
+      ),
+      onFinish: (message) => {
+        registerMessage("assistant", message.content);
+      },
+    });
   const { data: session } = useSession();
   const createMessageMutation = useCreateMessage();
   const updateChatMutation = useUpdateChat();
   const deleteMessageMutation = useDeleteMessage();
-  const { data: messages } = useFetchMessages(params.chatId);
   const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
     IsOpenSideMenuContext,
   );
@@ -47,24 +69,34 @@ export default function Page({ params }: { params: { chatId: string } }) {
   );
   const [errorMsg, setErrorMsg] = useState("");
 
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(textAreaRef.current, input);
+
   useLayoutEffect(() => {
     generatingMessageRef.current?.scrollIntoView();
-  }, [streamChatCompletionMutation.content]);
+  }, [messages]);
 
   if (!session || !messages) return null;
 
-  const handleSubmit = async (content: string) => {
-    if (!isWithinLimitTokenCount(content)) {
+  const convertMessageFromDbToOpenai = (message: Message) => {
+    return {
+      id: message.id,
+      content: message.content,
+      role: message.role as Role,
+    };
+  };
+
+  const onSubmit = (e: any) => {
+    if (!isWithinLimitTokenCount(input)) {
       setErrorMsg("入力トークン数が1000を超えています");
       return;
     }
-
-    registerMessage("user", content);
+    registerMessage("user", input);
     updateChatMutation.mutate({
       id: params.chatId,
-      title: createChatTitle(content),
+      title: createChatTitle(input),
     });
-    await startCompletion(createParams(content));
+    startCompletion(input, e);
   };
 
   const createParams = (content: string): StreamChatDTO["params"] => {
@@ -79,28 +111,30 @@ export default function Page({ params }: { params: { chatId: string } }) {
     };
   };
 
-  const startCompletion = async (params: StreamChatDTO["params"]) => {
+  const startCompletion = async (content: string, e?: any) => {
     if (errorMsg) {
       setErrorMsg("");
     }
 
-    await streamChatCompletionMutation.start({
-      params,
-      onSuccess: async (answer) => {
-        registerMessage("assistant", answer);
-        streamChatCompletionMutation.setContent(undefined);
-      },
-      onError: (errorCode) => {
-        console.log(errorCode);
-        // const message =
-        //   errorCode === "context_length_exceeded"
-        //     : "エラーが発生しました";
-        // notifyError({
-        //   message,
-        //   options: { autoClose: false },
-        // });
-      },
-    });
+    handleSubmit(e);
+
+    // await streamChatCompletionMutation.start({
+    //   params,
+    //   onSuccess: async (answer) => {
+    //     registerMessage("assistant", answer);
+    //     streamChatCompletionMutation.setContent(undefined);
+    //   },
+    //   onError: (errorCode) => {
+    //     console.log(errorCode);
+    //     // const message =
+    //     //   errorCode === "context_length_exceeded"
+    //     //     : "エラーが発生しました";
+    //     // notifyError({
+    //     //   message,
+    //     //   options: { autoClose: false },
+    //     // });
+    //   },
+    // });
   };
 
   const registerMessage = (role: CreateMessageRole, content: string) => {
@@ -116,14 +150,14 @@ export default function Page({ params }: { params: { chatId: string } }) {
   };
 
   const handleRegenerate = () => {
-    const lastMessageId = messages.slice(-1)[0].id;
-    // TODO: 一瞬AIの解答が二重に見えてしまう対処
-    deleteMessageMutation.mutate(lastMessageId);
-    const lastPromptMessage = messages.slice(-2, -1)[0];
-    if (lastPromptMessage.role === "user") {
-      const params = createParams(lastPromptMessage.content);
-      startCompletion(params);
-    }
+    // const lastMessageId = messages.slice(-1)[0].id;
+    // // TODO: 一瞬AIの解答が二重に見えてしまう対処
+    // deleteMessageMutation.mutate(lastMessageId);
+    // const lastPromptMessage = messages.slice(-2, -1)[0];
+    // if (lastPromptMessage.role === "user") {
+    //   const params = createParams(lastPromptMessage.content);
+    //   startCompletion(params);
+    // }
   };
 
   const hasMessage = () => {
@@ -136,7 +170,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
         <>
           <div
             className={twMerge(
-              "absolute hidden inset-0 w-screen h-full bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70 z-50",
+              "absolute inset-0 z-50 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
               isOpenDialogOfRemoveChat ? "block" : "",
             )}
           ></div>
@@ -211,29 +245,36 @@ export default function Page({ params }: { params: { chatId: string } }) {
             )}
             {hasMessage() && (
               <ul className=" dark:bg-gray-400">
-                {messages.map((message) => (
-                  <li key={message.id}>
+                {messages.map((message, index) => (
+                  <li
+                    key={message.id}
+                    ref={
+                      index === messages.length
+                        ? generatingMessageRef
+                        : undefined
+                    }
+                  >
                     <MessageItem message={message} />
                   </li>
                 ))}
-                {streamChatCompletionMutation.isLoading && (
+                {/* {isLoading && (
                   <li ref={generatingMessageRef}>
                     <MessageItem
                       message={{
                         id: "newMessage",
-                        chatId: params.chatId,
+                        // chatId: params.chatId,
                         role: "assistant",
-                        content: streamChatCompletionMutation.content ?? "",
+                        content: messages[messages.length - 1].content ?? "",
                       }}
                     />
                   </li>
-                )}
+                )} */}
                 {errorMsg && (
                   <li>
                     <MessageItem
                       message={{
                         id: "errorMessage",
-                        chatId: params.chatId,
+                        // chatId: params.chatId,
                         role: "assistant",
                         content: errorMsg,
                       }}
@@ -254,18 +295,56 @@ export default function Page({ params }: { params: { chatId: string } }) {
                 className={twMerge(
                   "w-full  py-4",
                   hasMessage()
-                    ? "fixed bottom-0 border-t-[1px] border-gray-900 dark:border-gray-600 bg-white dark:bg-gray-400 md:border-none md:bg-gradient-to-t md:from-white md:dark:border-none md:bg-transparent md:dark:bg-transparent md:dark:from-gray-300"
+                    ? "fixed bottom-0 border-t-[1px] border-gray-900 bg-white dark:border-gray-600 dark:bg-gray-400 md:border-none md:bg-transparent md:bg-gradient-to-t md:from-white md:dark:border-none md:dark:bg-transparent md:dark:from-gray-300"
                     : "",
                 )}
               >
                 <div className="mx-auto flex max-w-3xl flex-row items-center gap-3 px-2 md:mt-4 md:flex-col-reverse md:items-end md:px-0">
-                  <PromptForm
-                    onSubmit={handleSubmit}
-                    isGenerating={streamChatCompletionMutation.isLoading}
-                  />
+                  {/* <PromptForm
+                    input={input}
+                    onChange={onchange}
+                    onSubmit={handlePrompt}
+                    isGenerating={isLoading}
+                  /> */}
+                  <form onSubmit={onSubmit}>
+                    <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white px-3 py-[10px] shadow-sm dark:bg-gray-500 md:p-4">
+                      <textarea
+                        name="prompt"
+                        className="max-h-50 h-6 w-full resize-none overflow-y-auto bg-inherit align-middle placeholder-gray-700 focus:outline-none focus-visible:outline-none"
+                        placeholder="Send a message"
+                        onChange={handleInputChange}
+                        ref={textAreaRef}
+                        id="prompt"
+                        value={input}
+                        rows={1}
+                      ></textarea>
+                      {isLoading ? (
+                        <LoadingSpinner className="" />
+                      ) : (
+                        <button
+                          // type="submit"
+                          // onClick={handleSubmit}
+                          className={twMerge(
+                            "self-end rounded-lg p-2 transition-colors duration-200",
+                            input !== "" ? "bg-green-500" : "",
+                          )}
+                        >
+                          <SvgIcon
+                            name="sendMessage"
+                            className={twMerge(
+                              !!input
+                                ? "text-white"
+                                : "text-gray-800 dark:text-gray-700",
+                            )}
+                            fillColor={!!input ? "#fff" : ""}
+                          />
+                        </button>
+                      )}
+                    </div>
+                  </form>
                   {hasMessage() && (
                     <PromptingManageButton
-                      isGenerating={streamChatCompletionMutation.isLoading}
+                      isGenerating={isLoading}
                       onRegenerate={handleRegenerate}
                     />
                   )}
