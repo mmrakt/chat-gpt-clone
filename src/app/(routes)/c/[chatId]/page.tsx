@@ -44,18 +44,32 @@ import { twMerge } from "tailwind-merge";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Page({ params }: { params: { chatId: string } }) {
-  // const streamChatCompletionMutation = useStreamChatCompletion();
-  const { data: dbMessages } = useFetchMessages(params.chatId);
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/completion",
-      initialMessages: dbMessages?.map((message) =>
-        convertMessageFromDbToOpenai(message),
-      ),
-      onFinish: (message) => {
-        registerMessage("assistant", message.content);
-      },
-    });
+  const { data: dbMessages, isLoading: isFetching } = useFetchMessages(
+    params.chatId,
+  );
+  const convertMessageFromDbToOpenai = (message: Message) => {
+    return {
+      id: message.id,
+      content: message.content,
+      role: message.role as Role,
+    };
+  };
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    reload,
+  } = useChat({
+    api: "/api/completion",
+    initialMessages: dbMessages?.map((message) =>
+      convertMessageFromDbToOpenai(message),
+    ),
+    onFinish: (message) => {
+      registerMessage("assistant", message.content);
+    },
+  });
   const { data: session } = useSession();
   const createMessageMutation = useCreateMessage();
   const updateChatMutation = useUpdateChat();
@@ -76,15 +90,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
     generatingMessageRef.current?.scrollIntoView();
   }, [messages]);
 
-  if (!session || !messages) return null;
-
-  const convertMessageFromDbToOpenai = (message: Message) => {
-    return {
-      id: message.id,
-      content: message.content,
-      role: message.role as Role,
-    };
-  };
+  if (!session || isFetching) return null;
 
   const onSubmit = (e: any) => {
     if (!isWithinLimitTokenCount(input)) {
@@ -96,7 +102,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
       id: params.chatId,
       title: createChatTitle(input),
     });
-    startCompletion(input, e);
+    startCompletion(e);
   };
 
   const createParams = (content: string): StreamChatDTO["params"] => {
@@ -111,30 +117,12 @@ export default function Page({ params }: { params: { chatId: string } }) {
     };
   };
 
-  const startCompletion = async (content: string, e?: any) => {
+  const startCompletion = async (e: any) => {
     if (errorMsg) {
       setErrorMsg("");
     }
 
     handleSubmit(e);
-
-    // await streamChatCompletionMutation.start({
-    //   params,
-    //   onSuccess: async (answer) => {
-    //     registerMessage("assistant", answer);
-    //     streamChatCompletionMutation.setContent(undefined);
-    //   },
-    //   onError: (errorCode) => {
-    //     console.log(errorCode);
-    //     // const message =
-    //     //   errorCode === "context_length_exceeded"
-    //     //     : "エラーが発生しました";
-    //     // notifyError({
-    //     //   message,
-    //     //   options: { autoClose: false },
-    //     // });
-    //   },
-    // });
   };
 
   const registerMessage = (role: CreateMessageRole, content: string) => {
@@ -149,15 +137,21 @@ export default function Page({ params }: { params: { chatId: string } }) {
     createMessageMutation.mutate(newMessage);
   };
 
-  const handleRegenerate = () => {
-    // const lastMessageId = messages.slice(-1)[0].id;
-    // // TODO: 一瞬AIの解答が二重に見えてしまう対処
-    // deleteMessageMutation.mutate(lastMessageId);
-    // const lastPromptMessage = messages.slice(-2, -1)[0];
-    // if (lastPromptMessage.role === "user") {
-    //   const params = createParams(lastPromptMessage.content);
-    //   startCompletion(params);
-    // }
+  const handleRegenerate = (e: any) => {
+    const lastMessageId = dbMessages?.slice(-1)[0].id;
+    // TODO: 一瞬AIの解答が二重に見えてしまう対処
+    deleteMessageMutation.mutate(lastMessageId || "");
+    const lastPromptMessage = dbMessages?.slice(-2, -1)[0];
+    if (lastPromptMessage?.role === "user") {
+      if (textAreaRef.current) {
+        // NOTE: regenerate用のAPIが無いためreload()で対応
+        // issue: https://github.com/vercel/ai/issues/167
+        textAreaRef.current.value = lastPromptMessage.content;
+        handleInputChange(e);
+        reload();
+        startCompletion(e);
+      }
+    }
   };
 
   const hasMessage = () => {
