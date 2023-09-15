@@ -1,4 +1,4 @@
-import { isWithinTokenLimit } from "gpt-tokenizer";
+import { isWithinTokenLimit } from "gpt-tokenizer/model/text-davinci-003";
 
 const INPUT_TOKEN_LIMIT = 1000;
 

@@ -50,6 +50,8 @@ export type IMessage = {
   content: string;
 };
 
+export type Role = "system" | "user" | "assistant" | "function";
+
 export type CreateMessageRole = Extract<
   ChatCompletionRequestMessageRoleEnum,
   "user" | "assistant"

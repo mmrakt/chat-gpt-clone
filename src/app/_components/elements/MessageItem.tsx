@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
-  message: Pick<Message, "id" | "role" | "content" | "chatId">;
+  message: Pick<Message, "id" | "role" | "content">;
   isError?: boolean;
 };
 
@@ -36,7 +36,7 @@ const MessageItem = ({ message, isError }: Props) => {
             <span className="relative">
               <SvgIcon name="chatGpt" size={24} className="text-white" />
               {isError && (
-                <span className="absolute top-5 text-white left-5 border-[1px] border-white bg-red-500 rounded-full w-4 h-4 flex justify-center items-center">
+                <span className="absolute left-5 top-5 flex h-4 w-4 items-center justify-center rounded-full border-[1px] border-white bg-red-500 text-white">
                   !
                 </span>
               )}

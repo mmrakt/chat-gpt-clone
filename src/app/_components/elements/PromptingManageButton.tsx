@@ -3,7 +3,7 @@ import { SvgIcon } from "./SvgIcon";
 
 type Props = {
   isGenerating: boolean;
-  onRegenerate: () => void;
+  onRegenerate: (e: any) => void;
 };
 
 const buttonStyle =
