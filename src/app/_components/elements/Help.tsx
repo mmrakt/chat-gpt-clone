@@ -23,7 +23,7 @@ const Help = () => {
   ];
   const modalItemStyle = "w-full flex items-center gap-2 p-4";
   return (
-    <p className="px-2 text-xs text-gray-400 dark:text-gray-800 md:flex md:items-center md:justify-center md:px-0">
+    <p className="flex justify-center px-2 text-xs text-gray-400 dark:text-gray-800 md:items-center md:px-0">
       ※入力トークンの最大数は1000までです。
       <Menu>
         <Menu.Button

@@ -293,14 +293,8 @@ export default function Page({ params }: { params: { chatId: string } }) {
                     : "",
                 )}
               >
-                <div className="mx-auto flex max-w-3xl flex-row items-center gap-3 px-2 md:mt-4 md:flex-col-reverse md:items-end md:px-0">
-                  {/* <PromptForm
-                    input={input}
-                    onChange={onchange}
-                    onSubmit={handlePrompt}
-                    isGenerating={isLoading}
-                  /> */}
-                  <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
+                  <div className="mx-auto flex max-w-3xl flex-row items-center gap-3 px-2 md:mt-4 md:flex-col-reverse md:items-end md:px-0">
                     <div className="flex w-full items-center rounded-xl border-[1px] border-[rgba(0,0,0,.1)] bg-white px-3 py-[10px] shadow-sm dark:bg-gray-500 md:p-4">
                       <textarea
                         name="prompt"
@@ -335,14 +329,15 @@ export default function Page({ params }: { params: { chatId: string } }) {
                         </button>
                       )}
                     </div>
-                  </form>
-                  {hasMessage() && (
-                    <PromptingManageButton
-                      isGenerating={isLoading}
-                      onRegenerate={handleRegenerate}
-                    />
-                  )}
-                </div>
+
+                    {hasMessage() && (
+                      <PromptingManageButton
+                        isGenerating={isLoading}
+                        onRegenerate={handleRegenerate}
+                      />
+                    )}
+                  </div>
+                </form>
                 <div className="mt-4 ">
                   <Help />
                 </div>
