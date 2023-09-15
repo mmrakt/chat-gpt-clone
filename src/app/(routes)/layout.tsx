@@ -42,7 +42,6 @@ export default function RootLayout({
             </QueryClientProvider>
           </ThemeProvider>
         </AuthProvider>
-        <aside className=""></aside>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-# [ChatGPT Clone](https://chat-gpt-clone.vercel.app/)
+# [ChatGPT Clone](https://clone-chatgpt-app.vercel.app/)
 
 [ChatGPT](https://chat.openai.com/) clone app built with Next.js app router.
 
@@ -19,4 +19,5 @@ And open http://localhost:3000
 - Styling: Tailwind CSS
 - ORM: Prisma
 - Authentication: Auth.js
-- API: Express
+- Hosting: Vercel
+- DB: PostgreSQL(docker / supabase)
