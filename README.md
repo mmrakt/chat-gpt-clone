@@ -7,16 +7,10 @@
 ```
 pnpm i
 
-// start app server
 pnpm dev
-// start api server
-pnpm dev:backend
-
-// or
-pnpm dev:all
 ```
 
-And open [`http://localhost:3001`](http://localhost:3001)
+And open http://localhost:3000
 
 ## Tech stack
 
