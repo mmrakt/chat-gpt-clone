@@ -58,6 +58,16 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Chat {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+}
+
 model Message {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -65,16 +75,5 @@ model Message {
   chatId    String
   role      String
   content   String
-  Chat      Chat[]
-}
-
-model Chat {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messageId String?
-  message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }
