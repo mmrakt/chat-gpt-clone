@@ -4,6 +4,7 @@ import chatGpt from "../../../../public/chat-gpt.svg";
 import chat from "../../../../public/chat.svg";
 import clipboard from "../../../../public/clipboard.svg";
 import cross from "../../../../public/cross.svg";
+import customInstruction from "../../../../public/custom-instruction.svg";
 import cycle from "../../../../public/cycle.svg";
 import dots from "../../../../public/dots.svg";
 import edit from "../../../../public/edit.svg";
@@ -13,9 +14,11 @@ import good from "../../../../public/good.svg";
 import hamburger from "../../../../public/hamburger.svg";
 import keyboardShortcuts from "../../../../public/keyboard-shortcuts.svg";
 import lock from "../../../../public/lock.svg";
+import logout from "../../../../public/logout.svg";
 import plus from "../../../../public/plus.svg";
 import remove from "../../../../public/remove.svg";
 import sendMessage from "../../../../public/send-message.svg";
+import setting from "../../../../public/setting.svg";
 import sideMenu from "../../../../public/side-menu.svg";
 import square from "../../../../public/square.svg";
 import star from "../../../../public/star.svg";
@@ -45,12 +48,15 @@ const icons = {
   cross,
   sideMenu,
   remove,
+  setting,
+  logout,
+  customInstruction,
 };
 
-type Name = keyof typeof icons;
+export type IconName = keyof typeof icons;
 
 type Props = {
-  name: Name;
+  name: IconName;
   size?: number;
   fillColor?: string;
   className?: string;
