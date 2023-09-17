@@ -28,7 +28,7 @@ const PromptHelpers = () => {
       {helpers.map((helper) => (
         <button
           key={helper.title}
-          className="group relative flex items-center justify-between rounded-xl border-[1px] border-[rgba(0,0,0,.1)] px-3 py-2 text-start text-sm hover:bg-gray-900 dark:border-gray-600 dark:hover:bg-gray-500"
+          className="group relative flex cursor-not-allowed items-center justify-between rounded-xl border-[1px] border-[rgba(0,0,0,.1)] px-3 py-2 text-start text-sm hover:bg-gray-900 dark:border-gray-600 dark:hover:bg-gray-500"
         >
           <div className="flex w-full flex-col">
             <span className="font-bold dark:text-gray-800">{helper.title}</span>

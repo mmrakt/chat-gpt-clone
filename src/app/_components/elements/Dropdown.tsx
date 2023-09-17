@@ -9,6 +9,7 @@ export type ModalItem = {
   icon: IconName;
   href?: string;
   onClick?: () => void;
+  disabled: boolean;
 };
 
 type Props = {
@@ -43,6 +44,7 @@ const Dropdown = ({ modalItems, position }: Props) => {
               "hover:bg-gray-400",
               item.id === "help" && position === "sideMenu" && "md:hidden",
               item.id === "logout" && "border-t-[1px] border-gray-500",
+              item.disabled && "cursor-not-allowed",
             )}
             key={item.icon}
             as="li"

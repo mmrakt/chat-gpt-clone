@@ -28,12 +28,14 @@ const modalItems: ModalItem[] = [
     id: "customInstruction",
     text: "Custom instructions",
     icon: "customInstruction",
+    disabled: true,
   },
   helpModalItems[0],
   {
     id: "setting",
     text: "Settings",
     icon: "setting",
+    disabled: true,
   },
   {
     id: "logout",
@@ -43,6 +45,7 @@ const modalItems: ModalItem[] = [
       console.log("here");
       signOut({ callbackUrl: "/signin" });
     },
+    disabled: false,
   },
 ];
 
