@@ -4,7 +4,7 @@ const fetchChats = async (userId: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/?userId=${userId}`,
   );
-  const chats = await res.json();
+  const chats = res.json();
   return chats;
 };
 

@@ -61,6 +61,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
     handleSubmit,
     isLoading,
     reload,
+    stop,
   } = useChat({
     api: "/api/completion",
     initialMessages: dbMessages?.map((message) =>
@@ -139,7 +140,6 @@ export default function Page({ params }: { params: { chatId: string } }) {
 
   const handleRegenerate = (e: any) => {
     const lastMessageId = dbMessages?.slice(-1)[0].id;
-    // TODO: 一瞬AIの解答が二重に見えてしまう対処
     deleteMessageMutation.mutate(lastMessageId || "");
     const lastPromptMessage = dbMessages?.slice(-2, -1)[0];
     if (lastPromptMessage?.role === "user") {
@@ -164,7 +164,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
         <>
           <div
             className={twMerge(
-              "absolute inset-0 z-50 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
+              "absolute inset-0 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
               isOpenDialogOfRemoveChat ? "block" : "",
             )}
           ></div>
@@ -251,18 +251,6 @@ export default function Page({ params }: { params: { chatId: string } }) {
                     <MessageItem message={message} />
                   </li>
                 ))}
-                {/* {isLoading && (
-                  <li ref={generatingMessageRef}>
-                    <MessageItem
-                      message={{
-                        id: "newMessage",
-                        // chatId: params.chatId,
-                        role: "assistant",
-                        content: messages[messages.length - 1].content ?? "",
-                      }}
-                    />
-                  </li>
-                )} */}
                 {errorMsg && (
                   <li>
                     <MessageItem
@@ -310,8 +298,6 @@ export default function Page({ params }: { params: { chatId: string } }) {
                         <LoadingSpinner className="" />
                       ) : (
                         <button
-                          // type="submit"
-                          // onClick={handleSubmit}
                           className={twMerge(
                             "self-end rounded-lg p-2 transition-colors duration-200",
                             input !== "" ? "bg-green-500" : "",
@@ -334,6 +320,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
                       <PromptingManageButton
                         isGenerating={isLoading}
                         onRegenerate={handleRegenerate}
+                        onStop={stop}
                       />
                     )}
                   </div>

@@ -18,7 +18,7 @@ const CommonHeader = ({ hasMessageInCurrentChat }: Props) => {
                 GPT-3.5
               </span>
             </button>
-            <button className="flex w-36 items-center justify-center gap-2  rounded py-2.5 text-gray-700">
+            <button className="flex w-36 cursor-not-allowed items-center justify-center  gap-2 rounded py-2.5 text-gray-700">
               <SvgIcon name="star" />
               <span className="text-sm">GPT-4</span>
               <SvgIcon name="lock" />
