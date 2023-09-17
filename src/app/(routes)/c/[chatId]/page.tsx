@@ -61,6 +61,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
     handleSubmit,
     isLoading,
     reload,
+    stop,
   } = useChat({
     api: "/api/completion",
     initialMessages: dbMessages?.map((message) =>
@@ -319,6 +320,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
                       <PromptingManageButton
                         isGenerating={isLoading}
                         onRegenerate={handleRegenerate}
+                        onStop={stop}
                       />
                     )}
                   </div>
