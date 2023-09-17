@@ -12,14 +12,11 @@ export const modalItems: ModalItem[] = [
     text: "Help & FAQ",
     icon: "externalLink",
     href: "https://help.openai.com/en/collections/3742473-chatgpt",
-    onClick: () => {},
   },
   {
     id: "keyboard",
     text: "Keyboard shortcuts",
     icon: "keyboardShortcuts",
-    href: "",
-    onClick: () => {},
   },
 ];
 const Help = () => {

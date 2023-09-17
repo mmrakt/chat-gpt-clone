@@ -12,6 +12,7 @@ import useCreateChat from "@app/_hooks/chats/useCreateChat";
 import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
 import { Menu } from "@headlessui/react";
 import { User } from "next-auth";
+import { signOut } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -27,23 +28,21 @@ const modalItems: ModalItem[] = [
     id: "customInstruction",
     text: "Custom instructions",
     icon: "customInstruction",
-    href: "",
-    onClick: () => {},
   },
   helpModalItems[0],
   {
     id: "setting",
     text: "Settings",
     icon: "setting",
-    href: "",
-    onClick: () => {},
   },
   {
     id: "logout",
     text: "Log out",
     icon: "logout",
-    href: "",
-    onClick: () => {},
+    onClick: () => {
+      console.log("here");
+      signOut({ callbackUrl: "/signin" });
+    },
   },
 ];
 

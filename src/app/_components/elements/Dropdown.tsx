@@ -47,7 +47,7 @@ const Dropdown = ({ modalItems, position }: Props) => {
             key={item.icon}
             as="li"
           >
-            {item.href !== "" ? (
+            {item.href ? (
               <a
                 href={item.href}
                 className={twMerge(modalItemStyle)}
@@ -56,6 +56,14 @@ const Dropdown = ({ modalItems, position }: Props) => {
                 <SvgIcon name={item.icon} size={16} />
                 {item.text}
               </a>
+            ) : item.onClick ? (
+              <button
+                onClick={item.onClick}
+                className={twMerge(modalItemStyle)}
+              >
+                <SvgIcon name={item.icon} size={16} />
+                {item.text}
+              </button>
             ) : (
               <p className={twMerge(modalItemStyle)}>
                 <SvgIcon name={item.icon} size={16} />
