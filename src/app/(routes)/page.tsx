@@ -5,9 +5,8 @@ import { getServerSession } from "next-auth";
 
 export default async function Page({ params }: { params: { chatId: string } }) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/signin");
-  }
+  if (!session) return;
+
   const chats = await fetchChats(session.user.id);
   if (chats.length !== 0) {
     redirect(`/c/${chats[0].id}`);
