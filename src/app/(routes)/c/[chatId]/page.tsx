@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useContext, useLayoutEffect, useRef, useState } from "react";
+import MessageList from "../../../_components/elements/MessageList";
 import Overlay from "../../../_components/elements/Overlay";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
@@ -14,7 +15,12 @@ import SpHeader from "@app/_components/elements/SpHeader";
 import { SvgIcon } from "@app/_components/elements/SvgIcon";
 import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
-import { CreateMessageRole, IMessage, Role } from "@app/_config";
+import {
+  CreateMessageRole,
+  IMessage,
+  INPUT_TOKEN_LIMIT,
+  Role,
+} from "@app/_config";
 import useUpdateChat from "@app/_hooks/chats/useUpdateChat";
 import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
@@ -81,7 +87,8 @@ export default function Page({ params }: { params: { chatId: string } }) {
 
   const onSubmit = (e: any) => {
     if (!isWithinLimitTokenCount(input)) {
-      setErrorMsg("入力トークン数が1000を超えています");
+      setErrorMsg(`入力トークン数が${INPUT_TOKEN_LIMIT}を超えています`);
+      e.preventDefault();
       return;
     }
     registerMessage("user", input);
@@ -202,33 +209,11 @@ export default function Page({ params }: { params: { chatId: string } }) {
               </div>
             )}
             {hasMessage() && (
-              <ul className=" dark:bg-gray-400">
-                {messages.map((message, index) => (
-                  <li
-                    key={message.id}
-                    ref={
-                      index === messages.length
-                        ? generatingMessageRef
-                        : undefined
-                    }
-                  >
-                    <MessageItem message={message} />
-                  </li>
-                ))}
-                {errorMsg && (
-                  <li>
-                    <MessageItem
-                      message={{
-                        id: "errorMessage",
-                        // chatId: params.chatId,
-                        role: "assistant",
-                        content: errorMsg,
-                      }}
-                      isError
-                    />
-                  </li>
-                )}
-              </ul>
+              <MessageList
+                messages={messages}
+                errorMsg={errorMsg}
+                ref={generatingMessageRef}
+              />
             )}
             {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/1 */}
             {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/4 */}
