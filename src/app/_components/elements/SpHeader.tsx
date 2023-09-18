@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 import { SvgIcon } from "./SvgIcon";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
@@ -10,15 +11,25 @@ type Props = {
   user: User;
 };
 
-const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
-  const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
-  const { data: chats } = useFetchChats(user.id);
+const CreateChatButton = ({ hasMessageInCurrentChat, user }: Props) => {
   const createChatMutation = useCreateChat();
-  const handleCreateChat = async () => {
+  const { data: chats } = useFetchChats(user.id);
+  const useHandleCreateChat = async () => {
     if (hasMessageInCurrentChat && chats && chats.length <= 5) {
       await createChatMutation.mutate(user.id);
     }
   };
+
+  return (
+    <button className="" onClick={useHandleCreateChat}>
+      <SvgIcon name="plus" className="" size={24} />
+    </button>
+  );
+};
+
+const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
+  const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
+
   return (
     <div
       id="onlySpHeader"
@@ -33,9 +44,16 @@ const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
         <SvgIcon name="hamburger" className="" size={24} />
       </button>
       <span className="text-base">New chat</span>
-      <button className="" onClick={handleCreateChat}>
-        <SvgIcon name="plus" className="" size={24} />
-      </button>
+      <Suspense
+        fallback={
+          <LoadingSpinner className=" h-6 w-6 border-gray-800 border-t-transparent" />
+        }
+      >
+        <CreateChatButton
+          user={user}
+          hasMessageInCurrentChat={hasMessageInCurrentChat}
+        />
+      </Suspense>
     </div>
   );
 };

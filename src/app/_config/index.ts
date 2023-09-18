@@ -35,10 +35,6 @@ export const MODEL_INFO = {
   [key in AssignableModel]: { name: string; detailName: string };
 };
 
-export type StreamChatDTO = {
-  params: Pick<CreateChatCompletionRequest, "model" | "messages">;
-};
-
 export type LocalStorageKey = "messages";
 
 // TODO: prismaの型と共有

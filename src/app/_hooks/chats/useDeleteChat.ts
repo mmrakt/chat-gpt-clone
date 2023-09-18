@@ -11,8 +11,8 @@ const useDeleteChat = () => {
         method: "DELETE",
       }),
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries(["chats"]);
       router.push("/");
+      queryClient.invalidateQueries(["chats"]);
     },
   });
 };

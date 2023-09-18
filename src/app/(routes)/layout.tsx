@@ -34,9 +34,7 @@ export default function RootLayout({
             <QueryClientProvider>
               <IsOpenSideMenuProvider>
                 <IsOpenDialogOfRemoveChatProvider>
-                  <Suspense fallback="">
-                    <DisableSsrWrapper>{children}</DisableSsrWrapper>
-                  </Suspense>
+                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
                 </IsOpenDialogOfRemoveChatProvider>
               </IsOpenSideMenuProvider>
             </QueryClientProvider>

@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  FormEvent,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, useContext, useLayoutEffect, useRef, useState } from "react";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
 import Help from "@app/_components/elements/Help";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import MessageItem from "@app/_components/elements/MessageItem";
-// import PromptForm from "@app/_components/elements/PromptForm";
 import PromptHelpers from "@app/_components/elements/PromptHelpers";
 import PromptingManageButton from "@app/_components/elements/PromptingManageButton";
 import SideMenu from "@app/_components/elements/SideMenu";
@@ -26,14 +18,12 @@ import {
   CreateMessageRole,
   IMessage,
   Role,
-  StreamChatDTO,
 } from "@app/_config";
 import useUpdateChat from "@app/_hooks/chats/useUpdateChat";
 import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
 import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
 import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
-import { useStreamChatCompletion } from "@app/_hooks/useStreamChatCompletion";
 import { createChatTitle } from "@app/_utils/createChatTitle";
 import { isWithinLimitTokenCount } from "@app/_utils/tokenizer";
 import { Transition } from "@headlessui/react";
@@ -104,18 +94,6 @@ export default function Page({ params }: { params: { chatId: string } }) {
       title: createChatTitle(input),
     });
     startCompletion(e);
-  };
-
-  const createParams = (content: string): StreamChatDTO["params"] => {
-    return {
-      model: ASSIGNABLE_MODEL.THREE_TURBO,
-      messages: [
-        {
-          role: "user",
-          content,
-        },
-      ],
-    };
   };
 
   const startCompletion = async (e: any) => {
@@ -207,20 +185,23 @@ export default function Page({ params }: { params: { chatId: string } }) {
           leaveTo="-translate-x-64"
           className="fixed z-40 h-full overflow-y-auto"
         >
-          <SideMenu
-            isOpen={isOpenSideMenu}
-            user={session.user}
-            onClose={() => setIsOpenSideMenu(false)}
-            currentChatId={params.chatId}
-            hasMessageInCurrentChat={hasMessage()}
-          />
+          <Suspense fallback={<div>hogehoge</div>}>
+            <SideMenu
+              user={session.user}
+              onClose={() => setIsOpenSideMenu(false)}
+              currentChatId={params.chatId}
+              hasMessageInCurrentChat={hasMessage()}
+            />
+          </Suspense>
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
+          {/* <Suspense fallback={<div>SpHeader</div>}> */}
           <SpHeader
             hasMessageInCurrentChat={hasMessage()}
             user={session.user}
           />
+          {/* </Suspense> */}
           <CommonHeader hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(

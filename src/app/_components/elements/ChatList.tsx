@@ -1,8 +1,11 @@
+"use client";
+
 import React, { useContext } from "react";
 import Link from "next/link";
 import { SvgIcon } from "./SvgIcon";
 import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { Chat } from "@prisma/client";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -29,16 +32,16 @@ const ChatList = ({ userId, currentChatId }: Props) => {
           <Link
             href={chat.id}
             className={twMerge(
-              "side-menu-list-item group overflow-ellipsis overflow-hidden whitespace-nowrap",
+              "side-menu-list-item group overflow-hidden overflow-ellipsis whitespace-nowrap",
               isCurrentChat(chat.id) && "bg-gray-400 hover:bg-gray-400",
             )}
           >
             <SvgIcon name="chat" className="" />
-            <div className="w-full relative flex items-center break-all overflow-hidden">
+            <div className="relative flex w-full items-center overflow-hidden break-all">
               {chat.title}
               <span
                 className={twMerge(
-                  "absolute h-full right-0 w-8 z-10 bg-gradient-to-l from-gray-200 group-hover:from-gray-300 to-[rgba(32,33,35,0)]",
+                  "absolute right-0 z-10 h-full w-8 bg-gradient-to-l from-gray-200 to-[rgba(32,33,35,0)] group-hover:from-gray-300",
                   isCurrentChat(chat.id)
                     ? "from-gray-400 group-hover:from-gray-400"
                     : "",
