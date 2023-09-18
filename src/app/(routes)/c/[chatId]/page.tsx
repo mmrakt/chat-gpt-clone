@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useContext, useLayoutEffect, useRef, useState } from "react";
+import Overlay from "../../../_components/elements/Overlay";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
 import Help from "@app/_components/elements/Help";
@@ -13,12 +14,7 @@ import SpHeader from "@app/_components/elements/SpHeader";
 import { SvgIcon } from "@app/_components/elements/SvgIcon";
 import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
-import {
-  ASSIGNABLE_MODEL,
-  CreateMessageRole,
-  IMessage,
-  Role,
-} from "@app/_config";
+import { CreateMessageRole, IMessage, Role } from "@app/_config";
 import useUpdateChat from "@app/_hooks/chats/useUpdateChat";
 import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
@@ -162,18 +158,7 @@ export default function Page({ params }: { params: { chatId: string } }) {
       >
         <SvgIcon name="sideMenu" className="" />
       </button>
-      <Transition
-        show={isOpenSideMenu}
-        enter="transition-opacity duration-200"
-        enterFrom="opacity-0"
-        enterTo="opacity-70"
-        leave="transition-opacity duration-200"
-        leaveFrom="opacity-70"
-        leaveTo="opacity-0"
-        className={twMerge(
-          "absolute z-30 h-screen w-screen bg-gray-700 dark:bg-[rgb(120,120,140)] md:hidden",
-        )}
-      ></Transition>
+      <Overlay isOpenSideMenu={isOpenSideMenu} />
       <div className={twMerge("flex")}>
         <Transition
           show={isOpenSideMenu}
@@ -196,12 +181,10 @@ export default function Page({ params }: { params: { chatId: string } }) {
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>
-          {/* <Suspense fallback={<div>SpHeader</div>}> */}
           <SpHeader
             hasMessageInCurrentChat={hasMessage()}
             user={session.user}
           />
-          {/* </Suspense> */}
           <CommonHeader hasMessageInCurrentChat={hasMessage()} />
           <div
             className={twMerge(

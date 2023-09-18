@@ -1,5 +1,5 @@
-import { useQuery, UseQueryResult } from "react-query";
 import { Message } from "@prisma/client";
+import { UseQueryResult, useQuery } from "react-query";
 
 const useFetchMessages = (chatId: string): UseQueryResult<Message[]> => {
   return useQuery<Message[]>({
@@ -10,7 +10,6 @@ const useFetchMessages = (chatId: string): UseQueryResult<Message[]> => {
       );
       return res.json();
     },
-    suspense: true,
   });
 };
 
