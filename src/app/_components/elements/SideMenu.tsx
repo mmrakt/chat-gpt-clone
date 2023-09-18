@@ -8,7 +8,7 @@ import { modalItems as helpModalItems } from "./Help";
 import { SvgIcon } from "./SvgIcon";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
-import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { Menu } from "@headlessui/react";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -55,7 +55,7 @@ const CreateChatButton = ({
   hasMessageInCurrentChat: boolean;
 }) => {
   const createChatMutation = useCreateChat();
-  const { data: chats } = useFetchChats(userId);
+  const { data: chats } = useFetchChatList(userId);
   const handleCreateChat = async () => {
     if (hasMessageInCurrentChat && chats && chats.length <= 5) {
       await createChatMutation.mutate(userId);

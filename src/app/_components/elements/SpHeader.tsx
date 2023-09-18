@@ -3,7 +3,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import { SvgIcon } from "./SvgIcon";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
-import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
+import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { User } from "next-auth";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const CreateChatButton = ({ hasMessageInCurrentChat, user }: Props) => {
   const createChatMutation = useCreateChat();
-  const { data: chats } = useFetchChats(user.id);
+  const { data: chats } = useFetchChatList(user.id);
   const useHandleCreateChat = async () => {
     if (hasMessageInCurrentChat && chats && chats.length <= 5) {
       await createChatMutation.mutate(user.id);

@@ -4,8 +4,7 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { SvgIcon } from "./SvgIcon";
 import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
-import { useFetchChats } from "@app/_hooks/chats/useFetchChats";
-import { Chat } from "@prisma/client";
+import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
 };
 
 const ChatList = ({ userId, currentChatId }: Props) => {
-  const { data: chatList } = useFetchChats(userId);
+  const { data: chatList } = useFetchChatList(userId);
   const { setIsOpenDialogOfRemoveChat } = useContext(
     IsOpenDialogOfRemoveChatContext,
   );

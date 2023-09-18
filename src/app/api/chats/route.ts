@@ -22,6 +22,10 @@ export const GET = async (req: Request) => {
     },
   });
 
+  if (!chats) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   return NextResponse.json(chats, { status: 200 });
 };
 
