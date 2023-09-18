@@ -11,6 +11,7 @@ import edit from "../../../../public/edit.svg";
 import externalLink from "../../../../public/external-link.svg";
 import github from "../../../../public/github.svg";
 import good from "../../../../public/good.svg";
+import google from "../../../../public/google.svg";
 import hamburger from "../../../../public/hamburger.svg";
 import keyboardShortcuts from "../../../../public/keyboard-shortcuts.svg";
 import lock from "../../../../public/lock.svg";
@@ -51,6 +52,7 @@ const icons = {
   setting,
   logout,
   customInstruction,
+  google,
 };
 
 export type IconName = keyof typeof icons;
