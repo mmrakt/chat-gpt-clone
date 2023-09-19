@@ -40,7 +40,6 @@ const modalItems: ModalItem[] = [
     text: "Log out",
     icon: "logout",
     onClick: () => {
-      console.log("here");
       signOut({ callbackUrl: "/signin" });
     },
     disabled: false,
