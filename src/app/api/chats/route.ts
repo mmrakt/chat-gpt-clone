@@ -3,7 +3,6 @@ import { prisma } from "@app/_libs/prisma";
 import { Chat } from "@prisma/client";
 
 export const GET = async (req: Request) => {
-  console.log('here');
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
   if (!userId) {
@@ -22,8 +21,6 @@ export const GET = async (req: Request) => {
       createdAt: "desc",
     },
   });
-
-  console.log("route.ts: chats: ", chats);
 
   if (!chats) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
