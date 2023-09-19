@@ -3,6 +3,7 @@ import { prisma } from "@app/_libs/prisma";
 import { Chat } from "@prisma/client";
 
 export const GET = async (req: Request) => {
+  console.log('here');
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
   if (!userId) {
