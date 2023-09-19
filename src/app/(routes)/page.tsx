@@ -9,7 +9,13 @@ export default async function Page({ params }: { params: { chatId: string } }) {
   if (!session) return;
 
   let res = await fetchApi(`/chats/?userId=${session.user.id}`);
+
+  console.log(res);
+
   const chats = (await res.json()) as Chat[];
+
+  console.log('here');
+  console.log(chats);
   if (chats.length !== 0) {
     redirect(`/c/${chats[0].id}`);
   }

@@ -10,6 +10,8 @@ export default async function Page({ params }: { params: { chatId: string } }) {
   if (!session) return;
 
   const res = await fetchApi(`/chats/${params.chatId}`);
+  console.log('hoge');
+  console.log(res);
   if (res.status === 404) {
     notFound();
   }
