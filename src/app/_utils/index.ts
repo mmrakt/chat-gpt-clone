@@ -1,6 +1,6 @@
 import { INPUT_TOKEN_LIMIT, Role } from "../_config";
 import { CHAT_TITLE_PREFIX } from "@app/_config";
-import { Message } from "ai";
+import { Message } from "@prisma/client";
 import { isWithinTokenLimit } from "gpt-tokenizer/model/text-davinci-003";
 
 
