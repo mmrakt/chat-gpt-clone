@@ -12,16 +12,16 @@ export default async function Page({ params }: { params: { chatId: string } }) {
 
   // const res = await fetchApi(`/chats/${params.chatId}`);
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${params.chatId}`)
-  console.log('hoge');
-  console.log(res.status);
-  if (res.status === 404) {
-    notFound();
-  }
+  // console.log('hoge');
+  // console.log(res.status);
+  // if (res.status === 404) {
+  //   notFound();
+  // }
 
-  const chat = (await res.json()) as Chat;
-  if (chat.userId !== session.user.id) {
-    notFound();
-  }
+  // const chat = (await res.json()) as Chat;
+  // if (chat.userId !== session.user.id) {
+  //   notFound();
+  // }
 
-  return <ChatContainer user={session.user} chatId={chat.id} />;
+  return <ChatContainer user={session.user} chatId={params.chatId} />;
 }
