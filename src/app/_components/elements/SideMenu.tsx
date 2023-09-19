@@ -121,7 +121,7 @@ const SideMenu = ({
         </div>
       </div>
       <div className="sticky bottom-0 left-0 z-10 mt-5 w-full border-t-[1px] border-gray-600 bg-gray-200 pt-2">
-        <button className={twMerge("side-menu-list-item")}>
+        <button className={twMerge("side-menu-list-item", "cursor-not-allowed")}>
           <SvgIcon name="avatar" className="" />
           Renew Plus
         </button>

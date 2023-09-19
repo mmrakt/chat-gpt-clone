@@ -62,13 +62,13 @@ const MessageItem = ({ message, isError }: Props) => {
           </MarkdownRenderer>
           {message.role === "assistant" ? (
             <p className="flex justify-end gap-3">
-              <button className="">
+              <button className="cursor-not-allowed">
                 <SvgIcon name="clipboard" className="text-gray-900" />
               </button>
-              <button className="ml-1">
+              <button className="ml-1 cursor-not-allowed">
                 <SvgIcon name="good" />
               </button>
-              <button className="">
+              <button className="cursor-not-allowed">
                 <SvgIcon name="bad" />
               </button>
             </p>
