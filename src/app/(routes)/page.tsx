@@ -13,6 +13,7 @@ export default async function Page({ params }: { params: { chatId: string } }) {
   let res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/?userId=${session.user.id}`,
   );
+  console.log(res);
   console.log(res.status);
   const chats = await res.json();
 

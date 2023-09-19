@@ -23,6 +23,8 @@ export const GET = async (req: Request) => {
     },
   });
 
+  console.log("route.ts: chats: ", chats);
+
   if (!chats) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
