@@ -10,6 +10,7 @@ export const createChatTitle = (message: string) => {
 };
 
 export const fetchApi = async (path: string) => {
+  console.log(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`);
   return await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`);
 };
 
