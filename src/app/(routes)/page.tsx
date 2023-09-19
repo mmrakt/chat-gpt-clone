@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { Chat } from "../_config";
-import fetchApi from "../_utils/fetchApi";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
+import { fetchApi } from "@app/_utils";
+import { Chat } from "@prisma/client";
 
 export default async function Page({ params }: { params: { chatId: string } }) {
   const session = await getServerSession(authOptions);

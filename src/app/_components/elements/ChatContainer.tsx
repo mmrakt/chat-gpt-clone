@@ -25,13 +25,12 @@ import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
 import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
 import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
-import { createChatTitle } from "@app/_utils/createChatTitle";
-import { isWithinLimitTokenCount } from "@app/_utils/tokenizer";
 import { Transition } from "@headlessui/react";
 import { Message, User } from "@prisma/client";
 import { useChat } from "ai/react";
 import { twMerge } from "tailwind-merge";
 import { v4 as uuidv4 } from "uuid";
+import { isWithinLimitTokenCount, createChatTitle, convertMessageFromDbToOpenai } from "@app/_utils";
 
 type Props = {
   user: User;
@@ -39,13 +38,6 @@ type Props = {
 };
 const ChatContainer = ({ chatId, user }: Props) => {
   const { data: dbMessages } = useFetchMessages(chatId);
-  const convertMessageFromDbToOpenai = (message: Message) => {
-    return {
-      id: message.id,
-      content: message.content,
-      role: message.role as Role,
-    };
-  };
   const {
     messages,
     input,
@@ -81,8 +73,6 @@ const ChatContainer = ({ chatId, user }: Props) => {
   useLayoutEffect(() => {
     generatingMessageRef.current?.scrollIntoView();
   }, [messages]);
-
-  //   if (!session || isFetching) return null;
 
   const onSubmit = (e: any) => {
     if (!isWithinLimitTokenCount(input)) {
