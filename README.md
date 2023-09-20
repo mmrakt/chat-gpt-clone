@@ -2,6 +2,8 @@
 
 [ChatGPT](https://chat.openai.com/) clone app built with Next.js app router.
 
+![](demo.gif)
+
 ## Getting Started
 
 ```
