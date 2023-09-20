@@ -56,9 +56,6 @@ const CreateChatButton = ({
   const createChatMutation = useCreateChat();
   const { data: chats } = useFetchChatList(userId);
   const handleCreateChat = async () => {
-    console.log("fire");
-    console.log(hasMessageInCurrentChat);
-    console.log(chats?.length);
     if (hasMessageInCurrentChat && chats && chats.length <= 5) {
       await createChatMutation.mutate(userId);
     }
