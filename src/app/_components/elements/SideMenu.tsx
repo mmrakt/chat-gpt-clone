@@ -1,12 +1,13 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useContext, useState } from "react";
 import Image from "next/image";
 import ChatList from "./ChatList";
 import Dropdown, { ModalItem } from "./Dropdown";
 import { modalItems as helpModalItems } from "./Help";
 import { SvgIcon } from "./SvgIcon";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
+import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
 import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { Menu } from "@headlessui/react";
@@ -16,9 +17,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   user: User;
-  onClose: () => void;
   currentChatId: string;
-  hasMessageInCurrentChat: boolean;
 };
 
 const modalItems: ModalItem[] = [
@@ -46,17 +45,11 @@ const modalItems: ModalItem[] = [
   },
 ];
 
-const CreateChatButton = ({
-  userId,
-  hasMessageInCurrentChat,
-}: {
-  userId: string;
-  hasMessageInCurrentChat: boolean;
-}) => {
+const CreateChatButton = ({ userId }: { userId: string }) => {
   const createChatMutation = useCreateChat();
   const { data: chats } = useFetchChatList(userId);
   const handleCreateChat = async () => {
-    if (hasMessageInCurrentChat && chats && chats.length <= 5) {
+    if (chats && chats.length <= 5) {
       await createChatMutation.mutate(userId);
     }
   };
@@ -72,12 +65,10 @@ const CreateChatButton = ({
   );
 };
 
-const SideMenu = ({
-  user,
-  onClose,
-  currentChatId,
-  hasMessageInCurrentChat,
-}: Props) => {
+const SideMenu = ({ user, currentChatId }: Props) => {
+  const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
+    IsOpenSideMenuContext,
+  );
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
@@ -95,12 +86,14 @@ const SideMenu = ({
               </div>
             }
           >
-            <CreateChatButton
-              userId={user.id}
-              hasMessageInCurrentChat={hasMessageInCurrentChat}
-            />
+            <CreateChatButton userId={user.id} />
           </Suspense>
-          <button className={twMerge("side-menu-button")} onClick={onClose}>
+          <button
+            className={twMerge("side-menu-button")}
+            onClick={() => {
+              setIsOpenSideMenu(false);
+            }}
+          >
             <SvgIcon name="sideMenu" className="" />
           </button>
         </div>
