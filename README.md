@@ -9,6 +9,9 @@
 ```
 pnpm i
 
+// setup postgres dokcer container
+make up
+
 pnpm dev
 ```
 
