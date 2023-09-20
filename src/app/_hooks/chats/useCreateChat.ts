@@ -14,7 +14,7 @@ const useCreateChat = () => {
         }),
       }),
     onSuccess: async (data) => {
-      queryClient.invalidateQueries(["chats"]);
+      queryClient.resetQueries(["chats"]);
       const newChat = await data.json();
       router.push(`/c/${newChat.id}`);
     },

@@ -25,12 +25,16 @@ import useCreateMessage from "@app/_hooks/messages/useCreateMessage";
 import useDeleteMessage from "@app/_hooks/messages/useDeleteMessage";
 import { useFetchMessages } from "@app/_hooks/messages/useFetchMessages";
 import useAutosizeTextArea from "@app/_hooks/useAutosizeTextArea";
+import {
+  convertMessageFromDbToOpenai,
+  createChatTitle,
+  isWithinLimitTokenCount,
+} from "@app/_utils";
 import { Transition } from "@headlessui/react";
 import { Message, User } from "@prisma/client";
 import { useChat } from "ai/react";
 import { twMerge } from "tailwind-merge";
 import { v4 as uuidv4 } from "uuid";
-import { isWithinLimitTokenCount, createChatTitle, convertMessageFromDbToOpenai } from "@app/_utils";
 
 type Props = {
   user: User;
@@ -133,8 +137,9 @@ const ChatContainer = ({ chatId, user }: Props) => {
       {isOpenDialogOfRemoveChat && (
         <>
           <div
+            id="foo"
             className={twMerge(
-              "absolute inset-0 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
+              "absolute inset-0 z-40 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
               isOpenDialogOfRemoveChat ? "block" : "",
             )}
           ></div>
@@ -163,14 +168,12 @@ const ChatContainer = ({ chatId, user }: Props) => {
           leaveTo="-translate-x-64"
           className="fixed z-40 h-full overflow-y-auto"
         >
-          <Suspense fallback={<div>hogehoge</div>}>
-            <SideMenu
-              user={user}
-              onClose={() => setIsOpenSideMenu(false)}
-              currentChatId={chatId}
-              hasMessageInCurrentChat={hasMessage()}
-            />
-          </Suspense>
+          <SideMenu
+            user={user}
+            onClose={() => setIsOpenSideMenu(false)}
+            currentChatId={chatId}
+            hasMessageInCurrentChat={hasMessage()}
+          />
         </Transition>
         {/* TODO: https://github.com/mmrakt/chat-gpt-clone/issues/3 */}
         <main className={twMerge("mx-auto w-screen dark:bg-gray-400")}>

@@ -48,7 +48,7 @@ const ChatList = ({ userId, currentChatId }: Props) => {
               ></span>
             </div>
 
-            {isCurrentChat(chat.id) && (
+            {isCurrentChat(chat.id) && chatList.length !== 1 && (
               <button className="pr-2" onClick={handleRemoveChat}>
                 <SvgIcon name="remove" className="" />
               </button>
