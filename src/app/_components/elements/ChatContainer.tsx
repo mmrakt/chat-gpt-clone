@@ -2,9 +2,10 @@
 
 import { Suspense, useContext, useLayoutEffect, useRef, useState } from "react";
 import MessageList from "./MessageList";
-import Overlay from "./Overlay";
+import TransitionOverlay from "./TransitionOverlay";
 import CommonHeader from "@app/_components/elements/CommonHeader";
 import Dialog from "@app/_components/elements/Dialog";
+import GithubCorner from "@app/_components/elements/GithubCorner";
 import Help from "@app/_components/elements/Help";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import PromptHelpers from "@app/_components/elements/PromptHelpers";
@@ -134,10 +135,13 @@ const ChatContainer = ({ chatId, user }: Props) => {
 
   return (
     <div className="h-full bg-white text-gray-200 dark:bg-gray-400 dark:text-white">
+      <div className="hidden md:block">
+        <GithubCorner />
+      </div>
       {isOpenDialogOfRemoveChat && (
         <>
           <div
-            id="foo"
+            id="hoge"
             className={twMerge(
               "absolute inset-0 z-40 hidden h-full w-screen bg-gray-800 bg-opacity-70 dark:bg-gray-600 dark:bg-opacity-70",
               isOpenDialogOfRemoveChat ? "block" : "",
@@ -150,13 +154,13 @@ const ChatContainer = ({ chatId, user }: Props) => {
       <button
         onClick={() => setIsOpenSideMenu(true)}
         className={twMerge(
-          "absolute left-5 top-5 hidden p-3 md:block",
+          "fixed left-5 top-5 z-30 hidden rounded-lg bg-white p-3 dark:bg-gray-400 md:block",
           isOpenSideMenu ? "md:hidden" : "",
         )}
       >
         <SvgIcon name="sideMenu" className="" />
       </button>
-      <Overlay isOpenSideMenu={isOpenSideMenu} />
+      <TransitionOverlay isOpenSideMenu={isOpenSideMenu} />
       <div className={twMerge("flex")}>
         <Transition
           show={isOpenSideMenu}
@@ -166,7 +170,7 @@ const ChatContainer = ({ chatId, user }: Props) => {
           leave="transition duration-200"
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-64"
-          className="fixed z-40 h-full overflow-y-auto"
+          className="fixed z-30 h-full overflow-y-auto"
         >
           <SideMenu
             user={user}

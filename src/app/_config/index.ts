@@ -57,3 +57,5 @@ export const CHAT_TITLE_PREFIX = "User Request: ";
 
 export const INPUT_TOKEN_LIMIT = 1000;
 export const OUTPUT_TOKEN_LIMIT = 1000;
+
+export const GITHUB_URL = "https://github.com/mmrakt/chat-gpt-clone";

@@ -31,12 +31,7 @@ const CommonHeader = ({ hasMessageInCurrentChat }: Props) => {
           <span className="text-sm text-gray-500 dark:text-gray-800">
             Default (GPT-3.5)
           </span>
-          <button className="cursor-not-allowed">
-            <SvgIcon
-              name="upload"
-              className="text-gray-500 dark:text-gray-800"
-            />
-          </button>
+          <span></span>
         </div>
       )}
     </header>

@@ -1,7 +1,9 @@
 import { Suspense, useContext } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import { SvgIcon } from "./SvgIcon";
+import GithubCorner from "@app/_components/elements/GithubCorner";
 import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
+import { GITHUB_URL } from "@app/_config";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
 import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { User } from "next-auth";
@@ -33,7 +35,7 @@ const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
   return (
     <div
       id="onlySpHeader"
-      className="sticky  top-0 z-10 flex items-center justify-between bg-gray-400 px-4 py-2 text-gray-800 dark:border-b-[1px] dark:border-gray-600 md:hidden"
+      className="sticky top-0 flex items-center justify-between bg-gray-400 px-4 py-2 text-gray-800 dark:border-b-[1px] dark:border-gray-600 md:hidden"
     >
       <button
         className=""
@@ -44,16 +46,21 @@ const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
         <SvgIcon name="hamburger" className="" size={24} />
       </button>
       <span className="text-base">New chat</span>
-      <Suspense
-        fallback={
-          <LoadingSpinner className=" h-6 w-6 border-gray-800 border-t-transparent" />
-        }
-      >
-        <CreateChatButton
-          user={user}
-          hasMessageInCurrentChat={hasMessageInCurrentChat}
-        />
-      </Suspense>
+      <p className="flex items-center gap-3">
+        <Suspense
+          fallback={
+            <LoadingSpinner className=" h-6 w-6 border-gray-800 border-t-transparent" />
+          }
+        >
+          <CreateChatButton
+            user={user}
+            hasMessageInCurrentChat={hasMessageInCurrentChat}
+          />
+        </Suspense>
+        <a href={GITHUB_URL} target="_blank" className="text-white">
+          <SvgIcon name="github" />
+        </a>
+      </p>
     </div>
   );
 };
