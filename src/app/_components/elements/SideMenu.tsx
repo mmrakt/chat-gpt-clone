@@ -99,7 +99,7 @@ const SideMenu = ({ user, currentChatId }: Props) => {
         </div>
         <div className="mt-3">
           <p className="font-md mb-3 pl-3 text-xs text-gray-800">
-            ※チャットの作成数は5つまでです
+            ※The maximum number of created chats is up to 5.
           </p>
 
           <Suspense

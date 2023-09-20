@@ -26,7 +26,7 @@ const Help = () => {
 
   return (
     <p className="flex justify-center px-2 text-xs text-gray-400 dark:text-gray-800 md:items-center md:px-0">
-      ※入力トークンの最大数は1000までです。
+      ※The maximum number of input tokens is 1000.
       <Menu>
         <Menu.Button
           onClick={() => {
