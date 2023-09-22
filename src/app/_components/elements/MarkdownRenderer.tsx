@@ -1,6 +1,5 @@
 import { CodeBlock } from "./CodeBlock";
 import ReactMarkdown from "react-markdown";
-import { isError } from "react-query";
 import remarkGfm from "remark-gfm";
 import { twMerge } from "tailwind-merge";
 

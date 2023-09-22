@@ -56,7 +56,7 @@ const MessageItem = ({ message, isError }: Props) => {
             </>
           )}
         </div>
-        <div className="flex w-full flex-col gap-7 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex w-full flex-col gap-7 pr-4 md:p-0 lg:flex-row lg:items-start lg:justify-between">
           <MarkdownRenderer isError={isError}>
             {message.content}
           </MarkdownRenderer>

@@ -106,7 +106,7 @@ a {
 
 /*---- markdown template -----*/
 .markdown {
-  @apply break-words font-normal leading-7 dark:text-gray-800;
+  @apply w-full break-words font-normal leading-7 dark:text-gray-800;
 }
 
 .markdown.error {

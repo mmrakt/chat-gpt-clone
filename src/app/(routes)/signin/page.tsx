@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 
 const Page = () => {
   return (
-    <div className="mx-auto h-screen max-w-sm pt-48">
+    <div className="mx-auto h-screen max-w-md px-4 pt-48">
       <h1 className="text-center text-3xl font-bold">
         Sign in to ChatGPT Clone
       </h1>
