@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
+import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
 import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import useDeleteChat from "@app/_hooks/chats/useDeleteChat";
+import { useFetchChat } from "@app/_hooks/chats/useFetchChat";
 import { Dialog as DialogEl } from "@headlessui/react";
 import { twMerge } from "tailwind-merge";
 
@@ -25,38 +27,51 @@ const Dialog = ({ isOpen, currentChatId }: Props) => {
     <DialogEl
       open={isOpen}
       onClose={handleCancel}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-200 rounded-lg z-50 dark:text-white"
+      className="absolute left-1/2 top-1/2 z-50 w-[90%] max-w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white dark:bg-gray-200 dark:text-white"
     >
       <DialogEl.Panel>
         <DialogEl.Title
           as="h3"
-          className="p-6 border-b-[1px] border-gray-900 dark:border-gray-400 text-lg"
+          className="border-b-[1px] border-gray-900 p-4 text-lg dark:border-gray-400 sm:p-6"
         >
           Delete chat?
         </DialogEl.Title>
-        <div className="p-6">
-          <DialogEl.Description className="max-w-[400px]">
-            <span className="">This will delete</span>
-            <span className="font-bold">
-              User Request: Summarize the conversation Title: Summarize
-              conversation.
-            </span>
-          </DialogEl.Description>
-          <div className="flex gap-2 justify-end mt-3">
+        <div className="p-4 sm:p-6">
+          <Suspense
+            fallback={
+              <div className="flex w-full items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            }
+          >
+            <ChatName chatId={currentChatId} />
+          </Suspense>
+          <div className="mt-5 flex  flex-col-reverse justify-end gap-3 sm:mt-3 sm:flex-row sm:gap-2">
             <DialogButton
               text="Cancel"
               onClick={handleCancel}
-              className="text-gray-300 border-[1px] border-gray-800 hover:bg-gray-900 dark:bg-gray-300 hover:dark:bg-gray-400 dark:border-gray-500 "
+              className="border-[1px] border-gray-800 text-gray-300 hover:bg-gray-900 dark:border-gray-500 dark:bg-gray-300 hover:dark:bg-gray-400 "
             />
             <DialogButton
               text="Delete"
               onClick={handleDelete}
-              className="text-white bg-red-700 hover:bg-red-800"
+              className="bg-red-700 text-white hover:bg-red-800"
             />
           </div>
         </div>
       </DialogEl.Panel>
     </DialogEl>
+  );
+};
+
+const ChatName = ({ chatId }: { chatId: string }) => {
+  const { data: chat } = useFetchChat(chatId);
+
+  return (
+    <DialogEl.Description className="max-w-[400px]">
+      <span className="">This will delete</span>
+      <span className="ml-1 font-bold">{chat?.title}</span>
+    </DialogEl.Description>
   );
 };
 
