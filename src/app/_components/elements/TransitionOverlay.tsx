@@ -17,7 +17,7 @@ const TransitionOverlay = ({ isOpenSideMenu }: Props) => {
       leaveFrom="opacity-70"
       leaveTo="opacity-0"
       className={twMerge(
-        "absolute z-30 h-screen w-screen bg-gray-700 dark:bg-[rgb(120,120,140)] md:hidden",
+        "fixed z-30 h-full w-screen bg-gray-700 dark:bg-[rgb(120,120,140)] md:hidden",
       )}
     ></Transition>
   );
