@@ -3,10 +3,8 @@ import ChatContainer from "@app/_components/elements/ChatContainer";
 import { createQueryWrapper } from "@app/_test/createQueryWrapper";
 import { server } from "@app/_test/mocks/server";
 import { Message, User } from "@prisma/client";
-import { toBeInTheDocument } from "@testing-library/jest-dom/matchers";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { rest } from "msw";
 import {
   afterAll,
   afterEach,
@@ -50,7 +48,7 @@ describe("ChatContainer", () => {
     expect(queryByText("message-content-005")).not.toBeInTheDocument();
   });
 
-  test.only("submit", async () => {
+  test("submit", async () => {
     const queryWrapper = createQueryWrapper().queryWrapper;
     const result = render(
       <ChatContainer user={dummyUser} chatId="chat-id-001" />,
@@ -87,7 +85,8 @@ describe("ChatContainer", () => {
       user.type(textBox, "Hello ChatGPT");
       const submitButton = screen.getByTestId("submitButton");
       user.click(submitButton);
-      // await waitFor(() => expect(mockFn).toHaveBeenCalledTimes(2));
+
+      expect(await result.queryByText("Hello ChatGPT")).not.toBeInTheDocument();
     });
   });
 });
