@@ -175,6 +175,7 @@ const ChatContainer = ({ chatId, user }: Props) => {
                     <LoadingSpinner className="" />
                   ) : (
                     <button
+                      data-testid="submitButton"
                       className={twMerge(
                         "self-end rounded-lg p-2 transition-colors duration-200",
                         input !== "" ? "bg-green-500" : "",
