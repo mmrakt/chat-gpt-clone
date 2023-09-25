@@ -39,4 +39,4 @@ const post: ResponseResolver<MockedRequest, typeof restContext> = (
   return res(ctx.status(200));
 };
 
-export default { get, post };
+export { get, post };
