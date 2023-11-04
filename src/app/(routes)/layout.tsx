@@ -5,8 +5,6 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import AuthProvider from "@app/_components/providers/AuthProvider";
-import IsOpenDialogOfRemoveChatProvider from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
-import IsOpenSideMenuProvider from "@app/_components/providers/IsOpenSideMenuProvider";
 import QueryClientProvider from "@app/_components/providers/QueryClientProvider";
 import ThemeProvider from "@app/_components/providers/ThemeProvider";
 import "@app/_styles/global.css";
@@ -48,11 +46,7 @@ export default async function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             <QueryClientProvider>
-              <IsOpenSideMenuProvider>
-                <IsOpenDialogOfRemoveChatProvider>
-                  <DisableSsrWrapper>{children}</DisableSsrWrapper>
-                </IsOpenDialogOfRemoveChatProvider>
-              </IsOpenSideMenuProvider>
+              <DisableSsrWrapper>{children}</DisableSsrWrapper>
             </QueryClientProvider>
           </ThemeProvider>
         </AuthProvider>

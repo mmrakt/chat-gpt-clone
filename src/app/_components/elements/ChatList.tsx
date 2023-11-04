@@ -3,8 +3,9 @@
 import React, { useContext } from "react";
 import Link from "next/link";
 import { SvgIcon } from "./SvgIcon";
-import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
+import { isOpenDialogOfRemoveChatAtom } from "@app/_store/IsOpenDialogOfRemoveChat";
+import { useAtom } from "jotai";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -14,9 +15,8 @@ type Props = {
 
 const ChatList = ({ userId, currentChatId }: Props) => {
   const { data: chatList } = useFetchChatList(userId);
-  const { setIsOpenDialogOfRemoveChat } = useContext(
-    IsOpenDialogOfRemoveChatContext,
-  );
+
+  const [, setIsOpenDialogOfRemoveChat] = useAtom(isOpenDialogOfRemoveChatAtom);
 
   const isCurrentChat = (chatId: string) => {
     return currentChatId === chatId;

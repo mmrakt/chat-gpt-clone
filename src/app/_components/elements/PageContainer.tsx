@@ -1,16 +1,17 @@
 "use client";
 
 import { useContext } from "react";
+import { isOpenSideMenuAtom } from "../../_store/isOpenSideMenu";
 import TransitionOverlay from "./TransitionOverlay";
 import ChatContainer from "@app/_components/elements/ChatContainer";
 import Dialog from "@app/_components/elements/Dialog";
 import GithubCorner from "@app/_components/elements/GithubCorner";
 import SideMenu from "@app/_components/elements/SideMenu";
 import { SvgIcon } from "@app/_components/elements/SvgIcon";
-import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
-import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
+import { isOpenDialogOfRemoveChatAtom } from "@app/_store/IsOpenDialogOfRemoveChat";
 import { Transition } from "@headlessui/react";
 import { User } from "@prisma/client";
+import { useAtom } from "jotai";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -18,12 +19,8 @@ type Props = {
   chatId: string;
 };
 const PageContainer = ({ chatId, user }: Props) => {
-  const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
-    IsOpenSideMenuContext,
-  );
-  const { isOpenDialogOfRemoveChat } = useContext(
-    IsOpenDialogOfRemoveChatContext,
-  );
+  const [isOpenSideMenu, setIsOpenSideMenu] = useAtom(isOpenSideMenuAtom);
+  const [isOpenDialogOfRemoveChat] = useAtom(isOpenDialogOfRemoveChatAtom);
 
   return (
     <div className="h-full bg-white text-gray-200 dark:bg-gray-400 dark:text-white">

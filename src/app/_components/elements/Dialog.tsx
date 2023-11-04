@@ -1,9 +1,10 @@
 import { Suspense, useContext } from "react";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
-import { IsOpenDialogOfRemoveChatContext } from "@app/_components/providers/IsOpenDialogOfRemoveChatProvider";
 import useDeleteChat from "@app/_hooks/chats/useDeleteChat";
 import { useFetchChat } from "@app/_hooks/chats/useFetchChat";
+import { isOpenDialogOfRemoveChatAtom } from "@app/_store/IsOpenDialogOfRemoveChat";
 import { Dialog as DialogEl } from "@headlessui/react";
+import { useAtom } from "jotai";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -11,9 +12,7 @@ type Props = {
   currentChatId: string;
 };
 const Dialog = ({ isOpen, currentChatId }: Props) => {
-  const { setIsOpenDialogOfRemoveChat } = useContext(
-    IsOpenDialogOfRemoveChatContext,
-  );
+  const [, setIsOpenDialogOfRemoveChat] = useAtom(isOpenDialogOfRemoveChatAtom);
   const deleteChatMutation = useDeleteChat();
 
   const handleCancel = () => {

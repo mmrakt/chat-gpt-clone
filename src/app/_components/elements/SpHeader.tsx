@@ -1,11 +1,11 @@
-import { Suspense, useContext } from "react";
+import { Suspense } from "react";
+import { isOpenSideMenuAtom } from "../../_store/isOpenSideMenu";
 import LoadingSpinner from "./LoadingSpinner";
 import { SvgIcon } from "./SvgIcon";
-import GithubCorner from "@app/_components/elements/GithubCorner";
-import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import { GITHUB_URL } from "@app/_config";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
 import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
+import { useAtom } from "jotai";
 import { User } from "next-auth";
 
 type Props = {
@@ -30,7 +30,7 @@ const CreateChatButton = ({ hasMessageInCurrentChat, user }: Props) => {
 };
 
 const SpHeader = ({ hasMessageInCurrentChat, user }: Props) => {
-  const { setIsOpenSideMenu } = useContext(IsOpenSideMenuContext);
+  const [, setIsOpenSideMenu] = useAtom(isOpenSideMenuAtom);
 
   return (
     <div
