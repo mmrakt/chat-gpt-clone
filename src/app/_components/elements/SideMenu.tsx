@@ -2,15 +2,16 @@
 
 import React, { Suspense, useContext, useState } from "react";
 import Image from "next/image";
+import { isOpenSideMenuAtom } from "../../_store/isOpenSideMenu";
 import ChatList from "./ChatList";
 import Dropdown, { ModalItem } from "./Dropdown";
 import { modalItems as helpModalItems } from "./Help";
 import { SvgIcon } from "./SvgIcon";
 import LoadingSpinner from "@app/_components/elements/LoadingSpinner";
-import { IsOpenSideMenuContext } from "@app/_components/providers/IsOpenSideMenuProvider";
 import useCreateChat from "@app/_hooks/chats/useCreateChat";
 import { useFetchChatList } from "@app/_hooks/chats/useFetchChatList";
 import { Menu } from "@headlessui/react";
+import { useAtom } from "jotai";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
@@ -66,9 +67,7 @@ const CreateChatButton = ({ userId }: { userId: string }) => {
 };
 
 const SideMenu = ({ user, currentChatId }: Props) => {
-  const { isOpenSideMenu, setIsOpenSideMenu } = useContext(
-    IsOpenSideMenuContext,
-  );
+  const [isOpenSideMenu, setIsOpenSideMenu] = useAtom(isOpenSideMenuAtom);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
